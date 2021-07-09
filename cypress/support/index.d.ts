@@ -8,10 +8,7 @@ declare namespace Cypress {
       month?: number,
       year?: number
     ): Chainable<Element>;
-
-    useAutocomplete(
-      newShiftCode: import("../../src/common-models/shift-info.model").ShiftCode
-    ): Chainable<Element>;
+    unloadSchedule(): Chainable<Element>;
 
     getWorkerShift(
       GetWorkerShiftOptions: import("./commands").GetWorkerShiftOptions
@@ -29,6 +26,9 @@ declare namespace Cypress {
       ChangeWorkerShiftOptions: import("./commands").CheckHoursInfoOptions
     ): Chainable<Element>;
 
+    useAutocomplete(
+      newShiftCode: import("../../src/state/schedule-data/shifts-types/shift-types.model").ShiftCode
+    ): Chainable<Element>;
     enterEditMode(): Chainable<Element>;
     saveToDatabase(): Chainable<Element>;
     leaveEditMode(): Chainable<Element>;

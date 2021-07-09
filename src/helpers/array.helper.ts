@@ -3,24 +3,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export type Primitive = undefined | null | boolean | number | string | bigint | symbol;
-
-type ValueOrNotDefined<T> = T extends NonNullable<T> ? T : T | null | undefined;
 export type ArrayPositionPointer = "HEAD" | "TAIL";
 
 export class ArrayHelper {
-  public static zip<T1, T2>(
-    array1: ValueOrNotDefined<T1>[] = [],
-    array2: ValueOrNotDefined<T2>[] = []
-  ): [ValueOrNotDefined<T1>, ValueOrNotDefined<T2>][] {
-    if (array1.length < array2.length) {
-      const count = array2.length - array1.length;
-      array1 = [...array1, ...Array.from(Array(count))];
-    }
-    return array1.map((v, index: number) => [v, array2[index]]);
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static arrayToObject<TIn, TOut extends Record<string, any>>(
+  public static objectArrayToDict<TIn, TOut extends Record<string, any>>(
     array: TIn[],
     keySelector: (item: TIn) => string,
     valueSelector: (key: string, item: TIn) => TOut = (key, item): TOut => ({} as TOut)

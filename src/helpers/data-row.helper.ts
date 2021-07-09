@@ -1,7 +1,8 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-import { DataRowModel } from "../common-models/data-row.model";
+import * as _ from "lodash";
+import { DataRowModel } from "../utils/data-row.model";
 import { DataRow } from "../logic/schedule-logic/data-row";
 import { ArrayHelper } from "./array.helper";
 
@@ -10,30 +11,11 @@ export class DataRowHelper {
     dataRows: DataRowModel[],
     includeNulls = false
   ): { [key: string]: T[] } {
-    return ArrayHelper.arrayToObject<DataRowModel, T[]>(
+    return ArrayHelper.objectArrayToDict<DataRowModel, T[]>(
       dataRows,
       (row) => row.rowKey,
       (key, dataRow) => dataRow.rowData(includeNulls, false)
     );
-  }
-
-  public static dataRowsAsDataRowDict<T extends DataRowModel>(dataRows: T[]): { [key: string]: T } {
-    return ArrayHelper.arrayToObject(
-      dataRows,
-      (item) => item.rowKey,
-      (key, row) => row
-    );
-  }
-
-  public static updateDataRowIndices(
-    dataRow: DataRow,
-    updateIndexes: number[],
-    newValue: string
-  ): DataRow {
-    return dataRow.updateData((data) => {
-      updateIndexes.forEach((ind) => (data[ind] = newValue));
-      return data;
-    });
   }
 
   public static copyWithReplaced<TData>(
@@ -41,7 +23,7 @@ export class DataRowHelper {
     source: DataRow<TData>[],
     newValue: TData
   ): DataRow<TData>[] {
-    const copy = source.map(DataRowHelper.deepCopy);
+    const copy = _.cloneDeep(source);
     copy.forEach((row, rowInd) => {
       row.updateData((data) =>
         data.map((cellValue, cellInd) => {
@@ -55,11 +37,7 @@ export class DataRowHelper {
     return copy;
   }
 
-  public static deepCopy<TData = string>(dataRow: DataRow<TData>): DataRow<TData> {
-    return new DataRow(dataRow.rowKey, [...dataRow.rowData(true)]);
-  }
-
-  public static areDataRowsEqual(dataRow1: DataRow, dataRow2: DataRow): boolean {
+  private static areDataRowsEqual(dataRow1: DataRow, dataRow2: DataRow): boolean {
     const rowData1 = dataRow1.rowData(true, true);
     const rowData2 = dataRow2.rowData(true, true);
     return ArrayHelper.arePrimitiveArraysEqual(rowData1, rowData2);

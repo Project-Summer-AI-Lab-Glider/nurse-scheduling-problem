@@ -1,9 +1,9 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-import { ShiftCode } from "../../../src/common-models/shift-info.model";
-import { ContractType } from "../../../src/common-models/worker-info.model";
-import { MonthDataArray } from "../../../src/helpers/shifts.helper";
+import { MonthDataArray } from "../../../src/helpers/month-data-array.model";
+import { ShiftCode } from "../../../src/state/schedule-data/shifts-types/shift-types.model";
+import { ContractType } from "../../../src/state/schedule-data/worker-info/worker-info.model";
 import { monthWorkerData } from "./march-2021-raw-worker-data";
 
 const MARCH_DAY_COUNT = 31;

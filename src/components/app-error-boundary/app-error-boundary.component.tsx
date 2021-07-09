@@ -3,8 +3,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import React, { ReactNode, useCallback, useState } from "react";
-import AppErrorModal from "../common-components/modal/app-error-modal/app-error.modal.component";
 import * as Sentry from "@sentry/react";
+import AppErrorModal from "../modals/app-error-modal/app-error.modal.component";
 
 interface AppErrorBoundaryOptions {
   children: ReactNode;

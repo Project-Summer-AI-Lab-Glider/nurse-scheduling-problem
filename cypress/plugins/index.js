@@ -19,9 +19,12 @@
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
-  return {
-    browsers: config.browsers.filter((b) => b.name === "electron"),
-  };
+  // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
+  require("@cypress/code-coverage/task")(on, config);
+  config.browsers = config.browsers.filter((b) => b.name === "electron");
+  // add other tasks to be registered here
+
+  // IMPORTANT to return the config object
+  // with the any changed environment variables
+  return config;
 };

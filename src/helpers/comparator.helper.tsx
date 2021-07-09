@@ -11,11 +11,11 @@ export class ComparatorHelper {
   public static descendingComparator<T>(a: T, b: T, orderBy: keyof T): ComparatorValues {
     if (b[orderBy] < a[orderBy]) {
       return -1;
-    } else if (b[orderBy] > a[orderBy]) {
-      return 1;
-    } else {
-      return 0;
     }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
   }
 
   /**
@@ -27,6 +27,7 @@ export class ComparatorHelper {
       : (a, b): ComparatorValues =>
           -ComparatorHelper.descendingComparator(a, b, orderBy) as ComparatorValues;
   }
+
   /**
    * Sorts array of objects in ascending or descending order by one of the object's key.
    * @param array - array of objects T

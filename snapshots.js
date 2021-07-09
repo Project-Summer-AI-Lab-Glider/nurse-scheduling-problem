@@ -1,12 +1,17 @@
 module.exports = {
   "__version": "6.5.0",
   "Schedule errors": {
-    "Should show errors returned by server": {
-      "1": "<div class=\"foldingSection\"\n  data-cy=\"folding-section\">\n  <div class=\"header\">\n    <div class=\"text\"\n      data-cy=\"open-folding-section\"><span><svg class=\"MuiSvgIcon-root\"\n          focusable=\"false\"\n          viewBox=\"0 0 24 24\"\n          aria-hidden=\"true\">\n          <path d=\"M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z\"></path>\n        </svg></span><span>Za mało pracowników w trakcie dnia (2)</span></div>\n    <hr class=\"middle\">\n  </div>\n  <div style=\"display: initial;\">\n    <div class=\"error-list-item \">\n      <div class=\"red-rectangle\"></div>\n      <div class=\"error-title\">\n        <p class=\"error-title-content\">26 października</p>\n      </div>\n      <div class=\"error-text\">Za mało pracowników w trakcie dnia: potrzeba\n        <b>8</b>,jest <b>5</b>.</div>\n      <div class=\"error-btn\"><button id=\"error-buttons\"\n          class=\"btn btn-primary btn-primary-disabled disabled-submit-button\"\n          disabled=\"\"\n          style=\"width: 90px; height: 26px;\">Pokaż</button></div>\n    </div>\n    <div class=\"error-list-item \">\n      <div class=\"red-rectangle\"></div>\n      <div class=\"error-title\">\n        <p class=\"error-title-content\">27 października</p>\n      </div>\n      <div class=\"error-text\">Za mało pracowników w trakcie dnia: potrzeba\n        <b>8</b>,jest <b>0</b>.</div>\n      <div class=\"error-btn\"><button id=\"error-buttons\"\n          class=\"btn btn-primary btn-primary-disabled disabled-submit-button\"\n          disabled=\"\"\n          style=\"width: 90px; height: 26px;\">Pokaż</button></div>\n    </div>\n  </div>\n</div>"
-    },
     "when errors are present": {
       "shows errors returned by server": {
-        "1": "<div class=\"foldingSection\"\n  data-cy=\"folding-section\">\n  <div class=\"header\">\n    <div class=\"text\"\n      data-cy=\"open-folding-section\"><span><svg class=\"MuiSvgIcon-root\"\n          focusable=\"false\"\n          viewBox=\"0 0 24 24\"\n          aria-hidden=\"true\">\n          <path d=\"M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z\"></path>\n        </svg></span><span>Za mało pracowników w trakcie dnia (2)</span></div>\n    <hr class=\"middle\">\n  </div>\n  <div style=\"display: initial;\">\n    <div class=\"error-list-item \">\n      <div class=\"red-rectangle\"></div>\n      <div class=\"error-title\">\n        <p class=\"error-title-content\">26 października</p>\n      </div>\n      <div class=\"error-text\">Za mało pracowników w trakcie dnia: potrzeba\n        <b>8</b>,jest <b>5</b>.</div>\n    </div>\n    <div class=\"error-list-item \">\n      <div class=\"red-rectangle\"></div>\n      <div class=\"error-title\">\n        <p class=\"error-title-content\">27 października</p>\n      </div>\n      <div class=\"error-text\">Za mało pracowników w trakcie dnia: potrzeba\n        <b>8</b>,jest <b>0</b>.</div>\n    </div>\n  </div>\n</div>"
+        "1": [
+          "Za mało pracowników w trakcie dnia: potrzeba 8, jest 5.",
+          "Za mało pracowników w trakcie dnia: potrzeba 8, jest 0.",
+          "Za mało pracowników w nocy: potrzeba 5, jest 0.",
+          "16 niedogodzin",
+          "64 niedogodziny",
+          "112 niedogodziny",
+          "160 niedogodzin"
+        ]
       }
     }
   },
@@ -944,6 +949,305 @@ module.exports = {
         "",
         ""
       ]
+    }
+  },
+  "ComparatorHelper": {
+    "stableSort": {
+      "ascending order": {
+        "when sorting by complex type": {
+          "does not change the array": {
+            "1": [
+              {
+                "simpleType": 1,
+                "complexType": {
+                  "string": "x",
+                  "number": 3
+                }
+              },
+              {
+                "simpleType": 3,
+                "complexType": {
+                  "string": "y",
+                  "number": 1
+                }
+              },
+              {
+                "simpleType": 2,
+                "complexType": {
+                  "string": "z",
+                  "number": 2
+                }
+              },
+              {
+                "simpleType": 2,
+                "complexType": {
+                  "string": "z1",
+                  "number": 2
+                }
+              }
+            ]
+          }
+        },
+        "when sorting by simple type": {
+          "sorts array in stable manner": {
+            "1": [
+              {
+                "simpleType": 1,
+                "complexType": {
+                  "string": "x",
+                  "number": 3
+                }
+              },
+              {
+                "simpleType": 2,
+                "complexType": {
+                  "string": "z",
+                  "number": 2
+                }
+              },
+              {
+                "simpleType": 2,
+                "complexType": {
+                  "string": "z1",
+                  "number": 2
+                }
+              },
+              {
+                "simpleType": 3,
+                "complexType": {
+                  "string": "y",
+                  "number": 1
+                }
+              }
+            ]
+          }
+        }
+      },
+      "descending order": {
+        "when sorting by simple type": {
+          "sorts array in stable manner": {
+            "1": [
+              {
+                "simpleType": 3,
+                "complexType": {
+                  "string": "y",
+                  "number": 1
+                }
+              },
+              {
+                "simpleType": 2,
+                "complexType": {
+                  "string": "z",
+                  "number": 2
+                }
+              },
+              {
+                "simpleType": 2,
+                "complexType": {
+                  "string": "z1",
+                  "number": 2
+                }
+              },
+              {
+                "simpleType": 1,
+                "complexType": {
+                  "string": "x",
+                  "number": 3
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "DataRowHelper": {
+    "copyWithReplaced": {
+      "when given boolean matrix and new value": {
+        "changes values at set positions": {
+          "1": [
+            {
+              "key": "test",
+              "data": [
+                0,
+                12,
+                13,
+                0
+              ],
+              "isEditable": true
+            },
+            {
+              "key": "test",
+              "data": [
+                21,
+                0,
+                23,
+                0
+              ],
+              "isEditable": true
+            }
+          ]
+        }
+      }
+    },
+    "dataRowsAsValueDict": {
+      "when data row's keys are the same": {
+        "when include nulls is true": {
+          "includes nulls in the output and squashes the rows": {
+            "1": {
+              "test": [
+                21,
+                22,
+                null,
+                24
+              ]
+            }
+          }
+        },
+        "when include nulls is false": {
+          "does not include nulls in the output and squashes the rows": {
+            "1": {
+              "test": [
+                21,
+                22,
+                24
+              ]
+            }
+          }
+        }
+      },
+      "when data row's keys are not the same": {
+        "when include nulls is true": {
+          "includes nulls in the output": {
+            "1": {
+              "test": [
+                11,
+                12,
+                13,
+                null
+              ],
+              "test1": [
+                21,
+                22,
+                null,
+                24
+              ]
+            }
+          }
+        },
+        "when include nulls is false": {
+          "does not include nulls in the output": {
+            "1": {
+              "test": [
+                11,
+                12,
+                13
+              ],
+              "test1": [
+                21,
+                22,
+                24
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "'Come back to now' button": {
+    "when schedule is loaded": {
+      "returns to current month from previous month": {
+        "1": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "D",
+          "R",
+          "N",
+          "",
+          "D",
+          "",
+          "N",
+          "",
+          "N",
+          "",
+          "",
+          "",
+          "DN",
+          "",
+          "N",
+          "N",
+          "N",
+          "N",
+          "",
+          "",
+          "D",
+          "N",
+          "N",
+          "",
+          "",
+          "DN",
+          "PN",
+          "",
+          "DN",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      "returns to current month from next month": {
+        "1": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "D",
+          "R",
+          "N",
+          "",
+          "D",
+          "",
+          "N",
+          "",
+          "N",
+          "",
+          "",
+          "",
+          "DN",
+          "",
+          "N",
+          "N",
+          "N",
+          "N",
+          "",
+          "",
+          "D",
+          "N",
+          "N",
+          "",
+          "",
+          "DN",
+          "PN",
+          "",
+          "DN",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      }
     }
   }
 }

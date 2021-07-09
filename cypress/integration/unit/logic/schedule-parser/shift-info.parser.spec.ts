@@ -5,11 +5,11 @@
 // import { DataRowParser } from "../../../../../src/logic/schedule-parser/data-row.parser";
 // import { MetaDataParser } from "../../../../../src/logic/schedule-parser/metadata.parser";
 // import { ShiftsInfoParser } from "../../../../../src/logic/schedule-parser/shifts-info.parser";
-// import { WorkerType } from "../../../../../src/common-models/worker-info.model";
+// import { WorkerType } from "../../../../../src/worker-info.model";
 
-//#region  data declaration
+// #region  data declaration
 
-/*const TestCases: { data: string[][]; expectedData: DataRowParser[]; errorCount: number }[] = [
+/* const TestCases: { data: string[][]; expectedData: DataRowParser[]; errorCount: number }[] = [
   {
     data: [["opiekunka 1", "N", "Error", "N", " ", "D", "N", "NotValid", "L4", "U"]],
     expectedData: [
@@ -42,22 +42,22 @@
 
 const metaData: MetaDataParser = new MetaDataParser(2020, 10, [
   ["Dni miesiąca", "28", "29", "30", "31", "1", "2", "3", "4", "5"],
-]);*/
+]); */
 
-//#region
+// #region
 
 describe("ShifstInfo parser", () => {
-  //todo update test
-  // context("Testing detection of errors", () => {
+  // todo update test
+  // context("Testing detection of error-list", () => {
   //   TestCases.forEach((element) => {
   //     const shiftsInfoParser = new ShiftsInfoParser(WorkerType.OTHER, metaData, element.data);
-  //     const result = shiftsInfoParser.errors;
-  //     it(`should have exaclty ${element.errorCount} errors`, () => {
+  //     const result = shiftsInfoParser.error-list;
+  //     it(`should have exaclty ${element.errorCount} error-list`, () => {
   //       expect(result).have.lengthOf(element.errorCount);
   //     });
   //   });
   // });
-  //todo update test
+  // todo update test
   // context("Testing section data", () => {
   //   TestCases.forEach((element) => {
   //     const shiftsInfoParser = new ShiftsInfoParser(WorkerType.OTHER, metaData, element.data);

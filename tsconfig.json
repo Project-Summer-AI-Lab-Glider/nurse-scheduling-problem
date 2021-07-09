@@ -1,12 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
+    "target": "es6",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -17,13 +13,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "noImplicitAny": false,
-    "noFallthroughCasesInSwitch": true
+    "noImplicitThis": true,
+    "strictFunctionTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": false, // Set to true in next refactor stages
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": false // Set to true in next refactor stages
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
   "typedocOptions": {
     "mode": "modules",
     "out": "docs"

@@ -5,7 +5,7 @@ import {
   ScheduleErrorLevel,
   ScheduleErrorMessageModel,
   ScheduleErrorType,
-} from "../common-models/schedule-error-message.model";
+} from "../state/schedule-data/schedule-errors/schedule-error-message.model";
 import {
   AlgorithmErrorCode,
   GroupedScheduleErrors,
@@ -13,8 +13,8 @@ import {
   NetworkErrorCode,
   ParseErrorCode,
   ScheduleError,
-} from "../common-models/schedule-error.model";
-import { ShiftsTypesDict } from "../common-models/shift-info.model";
+} from "../state/schedule-data/schedule-errors/schedule-error.model";
+import { ShiftTypesDict } from "../state/schedule-data/shifts-types/shift-types.model";
 import { ColorHelper } from "./colors/color.helper";
 import { Color, Colors } from "./colors/color.model";
 import { ShiftHelper } from "./shifts.helper";
@@ -25,7 +25,7 @@ type Error = ScheduleErrorLevel;
 export class ErrorMessageHelper {
   public static mapScheduleErrors(
     errors: GroupedScheduleErrors,
-    shiftTypes: ShiftsTypesDict
+    shiftTypes: ShiftTypesDict
   ): ScheduleErrorMessageModel[] {
     const mappedErrors = Object.values(errors).reduce(
       (previous, current) => [
@@ -39,13 +39,14 @@ export class ErrorMessageHelper {
 
   public static getErrorMessage(
     error: ScheduleError,
-    shiftsTypes: ShiftsTypesDict
+    shiftsTypes: ShiftTypesDict
   ): ScheduleErrorMessageModel {
-    const kind = error.kind;
-    let message = ``;
+    const { kind } = error;
+    let message = "";
     let title = "Nie rozpoznano błędu";
     let day = 0;
     let i = 0;
+    let workers = [""];
     let type = ScheduleErrorType.OTH;
     let newline = false;
 
@@ -62,7 +63,7 @@ export class ErrorMessageHelper {
             message += `, <b>${error.segments[i][0]}:00-${error.segments[i][1]}:00</b>`;
           }
         }
-        message += `${newline ? `<br>b` : `B`}rak pielęgniarek`;
+        message += `${newline ? "<br>b" : "B"}rak pielęgniarek`;
         type = ScheduleErrorType.AON;
         title = "date";
         if (error.day) {
@@ -81,7 +82,7 @@ export class ErrorMessageHelper {
             }
           }
         }
-        message += `${newline ? `<br>z` : `Z`}a mało pracowników w trakcie dnia: potrzeba <b>${
+        message += `${newline ? "<br>z" : "Z"}a mało pracowników w trakcie dnia: potrzeba <b>${
           error.required
         }</b>, jest <b>${error.actual}</b>.`;
         type = ScheduleErrorType.WND;
@@ -102,7 +103,7 @@ export class ErrorMessageHelper {
             }
           }
         }
-        message += `${newline ? `<br>z` : `Z`}a mało pracowników w nocy: potrzeba <b>${
+        message += `${newline ? "<br>z" : "Z"}a mało pracowników w nocy: potrzeba <b>${
           error.required
         }</b>, jest <b>${error.actual}</b>.`;
         type = ScheduleErrorType.WNN;
@@ -125,7 +126,7 @@ export class ErrorMessageHelper {
         }</strong>
           (${shiftsTypes[error.preceding].from}-${shiftsTypes[error.preceding].to}).
           Nie może mieć zmiany wcześniej niż o ${earliestPossible}`;
-        if (nextDay) message += ` następnego dnia`;
+        if (nextDay) message += " następnego dnia";
         message += `. Przypisana zmiana <strong>${error.succeeding}</strong> (${
           shiftsTypes[error.succeeding].from
         }-${shiftsTypes[error.succeeding].to}) zaczyna się
@@ -146,14 +147,28 @@ export class ErrorMessageHelper {
         type = ScheduleErrorType.WUH;
         title = `${error.worker}`;
         break;
+      case AlgorithmErrorCode.WorkerTeamsCollision:
+        const sections = findSections(error.hours);
+        const sectionIntersectionMsg = sections.map(({ start, end }) =>
+          start === end ? `${start}:00` : `${start}:00-${end}:00`
+        );
+        message = `W godzinach: <b>${sectionIntersectionMsg.join(", ")}</b>`;
+        message += `<br>Niedozwolone połączenie zespołów: <b>${error.workers.join(", ")}</b>.`;
+        type = ScheduleErrorType.WTC;
+        title = "date";
+        if (error.day) {
+          day += error.day;
+        }
+        workers = error.workers;
+        break;
       case ParseErrorCode.UNKNOWN_VALUE:
         message = `Nieznana wartość zmiany: "<b>${error.actual}</b>". Obecnie pole jest puste. Możesz ręcznie przypisać zmianę z tych już istniejących lub utworzyć nową.`;
         type = ScheduleErrorType.ILLEGAL_SHIFT_VALUE;
         title = `${error.worker}`;
-        day += error.day! + 1;
+        day += error.day + 1;
         break;
       case InputFileErrorCode.EMPTY_FILE:
-        message = `Błąd podczas wczytywania pliku wejściowego: Pusty plik`;
+        message = "Błąd podczas wczytywania pliku wejściowego: Pusty plik";
         break;
       case InputFileErrorCode.UNHANDLED_FILE_EXTENSION:
         message = `Nieobsługiwane rozszerzenie pliku: .${error.filename}`;
@@ -172,7 +187,7 @@ export class ErrorMessageHelper {
     const level = AlgorithmErrorCode[kind]
       ? ScheduleErrorLevel.CRITICAL_ERROR
       : ScheduleErrorLevel.WARNING;
-    return { kind, title, day, message, level, type };
+    return { kind, title, day, message, level, type, workers };
   }
 
   public static getErrorColor(error: Error): Color {
@@ -183,4 +198,23 @@ export class ErrorMessageHelper {
       }[error] ?? ColorHelper.getDefaultColor()
     );
   }
+}
+
+function findSections(array: number[]): Array<{ start: number; end: number }> {
+  let i = 0;
+  let resultIndex = -1;
+  const result: Array<{ start: number; end: number }> = [];
+  while (i < array.length) {
+    result.push({ start: array[i], end: array[i] });
+    resultIndex++;
+    while (
+      array[i + 1] &&
+      (array[i + 1] === array[i] + 1 || (array[i + 1] === 1 && array[i] === 24))
+    ) {
+      i++;
+    }
+    result[resultIndex].end = array[i];
+    i++;
+  }
+  return result;
 }

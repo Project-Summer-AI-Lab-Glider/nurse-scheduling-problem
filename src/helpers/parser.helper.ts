@@ -2,41 +2,53 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { DEFAULT_FROM } from "../logic/schedule-parser/shifts-types-info.parser";
+import { Shift } from "../state/schedule-data/shifts-types/shift-types.model";
+import { t } from "./translations.helper";
+
 export const EMPTY_ROW_SIZE = 40;
 export const EMPTY_ROW = Array(EMPTY_ROW_SIZE).fill("");
 
-export const WORKSHEET_NAME = "grafik";
-export const WORKERS_WORKSHEET_NAME = "pracownicy";
-export const SHIFTS_WORKSHEET_NAME = "zmiany";
+export const SCHEDULE_WORKSHEET_NAME = t("scheduleworksheetName");
+export const WORKERS_WORKSHEET_NAME = t("workersWorksheetName");
+export const SHIFTS_WORKSHEET_NAME = t("shiftsWorksheetName");
+export const ABSENCE_WORKSHEET_NAME = t("absenceWorksheetName");
 
-const NAZWA_ZMIANY = "Nazwa zmiany";
-const SKROT = "Skrót";
-const OD = "Od";
-const DO = "Do";
-const ZMIANA_PRACUJACA = "Zmiana pracująca";
-const KOLOR = "Kolor";
-export const SHIFT_HEADERS = [NAZWA_ZMIANY, SKROT, OD, DO, ZMIANA_PRACUJACA, KOLOR];
+const SHIFT_NAME = t("shiftNameExportHeader");
+const ABBREVIATION = t("abbreviationExportHeader");
+const FROM = t("fromExportHeader");
+const TO = t("toExportHeader");
+const WORKING_SHIFT = t("isWorkingShiftExportHeader");
+const COLOR = t("colorExportHeader");
+export const SHIFT_HEADERS = [SHIFT_NAME, ABBREVIATION, FROM, TO, WORKING_SHIFT, COLOR];
 
-const IMIE_I_NAZWISKO = "Imię i nazwisko";
-const STANOWISKO_FUNKCJA = "Stanowisko/funkcja";
-const RODZAJ_UMOWY = "Rodzaj umowy";
-const WYMIAR_CZASU_PRACY = "Wymiar czasu pracy";
-const ZESPOL = "Zespół";
+const NAME_SURNAME = t("nameSurnameExportHeader");
+const WORKER_TYPE = t("workerTypeExportHeader");
+const CONTRACT_TYPE = t("contractTypeExportHeader");
+const WORKTIME_NORM = t("worktimeNormExportHeader");
+const WORKER_TEAM = t("workerTeamExportHeader");
+const TYPE = t("leaveTypeExportHeader");
+const DAYSNO = t("daysNoExportHeader");
+const HOURSNO = t("hoursNoExportHeader");
+const FORYEAR = t("forYearExportHeader");
+
 export const WORKER_HEADERS = [
-  IMIE_I_NAZWISKO,
-  STANOWISKO_FUNKCJA,
-  RODZAJ_UMOWY,
-  WYMIAR_CZASU_PRACY,
-  ZESPOL,
+  NAME_SURNAME,
+  WORKER_TYPE,
+  CONTRACT_TYPE,
+  WORKTIME_NORM,
+  WORKER_TEAM,
 ];
 const CELLS_TO_AVOID = [
-  WORKSHEET_NAME,
-  NAZWA_ZMIANY,
-  IMIE_I_NAZWISKO,
-  STANOWISKO_FUNKCJA,
-  RODZAJ_UMOWY,
-  WYMIAR_CZASU_PRACY,
+  SCHEDULE_WORKSHEET_NAME,
+  SHIFT_NAME,
+  NAME_SURNAME,
+  WORKER_TYPE,
+  CONTRACT_TYPE,
+  WORKTIME_NORM,
 ];
+
+export const ABSENCE_HEADERS = [NAME_SURNAME, TYPE, FROM, TO, DAYSNO, HOURSNO, FORYEAR];
 
 export class ParserHelper {
   public static isEmptyRow(rowValues: Array<string>): boolean {
@@ -67,6 +79,7 @@ export class ParserHelper {
       case "nie":
         return false;
     }
+    return undefined;
   }
 
   public static translateBooleanToString(key: boolean | undefined, inEnglish = false): string {
@@ -84,26 +97,37 @@ export class ParserHelper {
   }
 
   public static getShiftNameHeaderIndex(): number {
-    return this.getShiftHeaderIndex(NAZWA_ZMIANY);
+    return this.getShiftHeaderIndex(SHIFT_NAME);
   }
 
   public static getShiftStartHeaderIndex(): number {
-    return this.getShiftHeaderIndex(OD);
+    return this.getShiftHeaderIndex(FROM);
   }
 
   public static getShiftEndHeaderIndex(): number {
-    return this.getShiftHeaderIndex(DO);
+    return this.getShiftHeaderIndex(TO);
   }
 
   public static getShiftIsWorkingHeaderIndex(): number {
-    return this.getShiftHeaderIndex(ZMIANA_PRACUJACA);
+    return this.getShiftHeaderIndex(WORKING_SHIFT);
   }
 
   public static getShiftCodeHeaderIndex(): number {
-    return this.getShiftHeaderIndex(SKROT);
+    return this.getShiftHeaderIndex(ABBREVIATION);
   }
 
   public static getShiftColorHeaderIndex(): number {
-    return this.getShiftHeaderIndex(KOLOR);
+    return this.getShiftHeaderIndex(COLOR);
+  }
+
+  public static shiftPassesDayStart(shift: Shift): boolean {
+    if (shift.isWorkingShift) {
+      if (shift.from <= shift.to) {
+        return shift.from < DEFAULT_FROM && DEFAULT_FROM < shift.to;
+      } else {
+        return DEFAULT_FROM < shift.to || shift.from < DEFAULT_FROM;
+      }
+    }
+    return false;
   }
 }

@@ -12,6 +12,63 @@ jobs:
         browser: [google-chrome]
         containers: [1, 2, 3, 4, 5]
     timeout-minutes: 10
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
+
+      - name: Read cypress config
+        id: read_config
+        run: |
+          content=`cat cypress.json`
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          echo "::set-output name=cypressConfig::$content"
+          mkdir coverage
+          touch coverage/coverage-final.json
+
+      - name: Run Cypress
+        uses: cypress-io/github-action@v2
+        with:
+          wait-on: ${{ env.APPLICATION_URL }}
+          group: Nurse project workers
+          record: true
+          parallel: true
+          start: npm start
+          browser: /usr/bin/${{ matrix.browser }}
+          tag: ${{ matrix.browser }}
+          headless: false
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLICATION_URL: ${{ fromJson(steps.read_config.outputs.cypressConfig).env.baseUrl }}
+      - name: Rename coverage
+        run: |
+          mv coverage/coverage-final.json coverage/coverage-final-${{ matrix.containers }}.json
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: parallel-job-${{ matrix.containers }}
+          path: coverage/coverage-final-${{ matrix.containers }}.json
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: parallel-job
+          path: coverage/coverage-final-${{ matrix.containers }}.json
+
+  badge:
+    needs: cypress
+    runs-on: [self-hosted]
+    strategy:
+      fail-fast: false
+    timeout-minutes: 10
+
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
@@ -30,18 +87,34 @@ jobs:
           content="${content//$'\r'/'%0D'}"
           echo "::set-output name=cypressConfig::$content"
 
-      - name: Run Cypress
-        uses: cypress-io/github-action@v2
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v2
         with:
-          wait-on: ${{ env.APPLICATION_URL }}
-          group: Nurse project workers
-          record: true
-          parallel: true
-          start: npm start
-          browser: /usr/bin/${{ matrix.browser }}
-          tag: ${{ matrix.browser }}
-          headless: false
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          APPLICATION_URL: ${{ fromJson(steps.read_config.outputs.cypressConfig).env.baseUrl }}
+          path: reports
+      - name: Get Coverage for badge
+        run: |
+          mv reports/parallel-job-1/coverage-final-1.json reports
+          mv reports/parallel-job-2/coverage-final-2.json reports
+          mv reports/parallel-job-3/coverage-final-3.json reports
+          mv reports/parallel-job-4/coverage-final-4.json reports
+          mv reports/parallel-job-5/coverage-final-5.json reports
+          npx nyc merge reports ./.nyc_output/out.json
+          npx nyc report --reporter=text-summary -t ./.nyc_output
+          SUMMARY="$(npx nyc report --reporter=text-summary -t ./.nyc_output | tail -2 | head -1)" 
+          TOKENS=($SUMMARY)
+          echo "COVERAGE=$(echo ${TOKENS[2]})" >> $GITHUB_ENV
+          REF="${{ github.ref }}"
+          IFS='/' read -ra PATHS <<< "$REF"
+          BRANCH_NAME="${PATHS[1]}_${PATHS[2]}"
+          echo "BRANCH=\"${BRANCH_NAME}\"" >> $GITHUB_ENV
+
+      - name: Create the Badge
+        uses: schneegans/dynamic-badges-action@v1.0.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 792d640ad8dad0e4c316a487f04cf471
+          filename: "nurse-scheduling-problem-frontend__${env.BRANCH}.json"
+          label: Test Coverage
+          message: ${{ env.COVERAGE }}
+          color: green
+    

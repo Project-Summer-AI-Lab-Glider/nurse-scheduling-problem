@@ -1,95 +1,42 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-import { ComparatorHelper, Order } from "../../../../src/helpers/comparator.helper";
-
-interface ComplexType {
-  street: string;
-  number: number;
-}
-interface TestType {
-  id: number;
-  name: string;
-  age: number;
-  address: ComplexType;
-}
-interface TestCase {
-  message?: string;
-  arr: TestType[];
-  order: Order;
-  orderBy: keyof TestType;
-  expected: TestType[];
-}
-
-const testObject1: TestType = { id: 1, name: "a", age: 1, address: { street: "za", number: 13 } };
-const testObject2: TestType = { id: 2, name: "ab", age: 3, address: { street: "x", number: 11 } };
-const testObject3: TestType = { id: 3, name: "bc", age: 2, address: { street: "y", number: 12 } };
-
-const stableSort: TestCase[] = [
-  {
-    arr: [testObject1, testObject2, testObject3],
-    order: "asc",
-    orderBy: "name",
-    expected: [testObject1, testObject2, testObject3],
-  },
-  {
-    arr: [testObject1, testObject2, testObject3],
-    order: "desc",
-    orderBy: "name",
-    expected: [testObject3, testObject2, testObject1],
-  },
-  {
-    arr: [testObject1, testObject2, testObject3],
-    order: "asc",
-    orderBy: "age",
-    expected: [testObject1, testObject3, testObject2],
-  },
-  {
-    arr: [testObject1, testObject2, testObject3],
-    order: "desc",
-    orderBy: "age",
-    expected: [testObject2, testObject3, testObject1],
-  },
-  {
-    message: "comparing complex type should return the same order",
-    arr: [testObject1, testObject2, testObject3],
-    order: "asc",
-    orderBy: "address",
-    expected: [testObject1, testObject2, testObject3],
-  },
-  {
-    message: "comparing complex type should return the same order",
-    arr: [testObject1, testObject2, testObject3],
-    order: "desc",
-    orderBy: "address",
-    expected: [testObject1, testObject2, testObject3],
-  },
-  {
-    arr: [testObject1],
-    order: "desc",
-    orderBy: "address",
-    expected: [testObject1],
-  },
-];
+import { ComparatorHelper } from "../../../../src/helpers/comparator.helper";
 
 describe("ComparatorHelper", () => {
-  stableSort.forEach((testCase) => {
-    describe("Stable sort test", () => {
-      const message = `Should sort objects:
-       ${testCase.arr
-         .map((o) => `id: ${o.id},${testCase.orderBy}: ${JSON.stringify(o[testCase.orderBy])}`)
-         .join(",\n")}
-       in ${testCase.order} order comparing ${testCase.orderBy} and gave result equal:
-        ${testCase.expected
-          .map((o) => `id: ${o.id},${testCase.orderBy}: ${JSON.stringify(o[testCase.orderBy])}`)
-          .join(",\n")}
-        ${testCase.message ? `because ${testCase.message}` : ""} `;
+  let array = [];
+  beforeEach(() => {
+    array = [
+      { simpleType: 1, complexType: { string: "x", number: 3 } },
+      { simpleType: 3, complexType: { string: "y", number: 1 } },
+      { simpleType: 2, complexType: { string: "z", number: 2 } },
+      { simpleType: 2, complexType: { string: "z1", number: 2 } },
+    ];
+  });
+  const sort = (order: "asc" | "desc") => {
+    context("when sorting by simple type", () => {
+      const orderBy = "simpleType";
 
-      it(message, () => {
-        const result = ComparatorHelper.stableSort(testCase.arr, testCase.order, testCase.orderBy);
-        cy.log(`Got result\n ${JSON.stringify(result)}`);
-        expect(result).to.eql(testCase.expected);
+      it("sorts array in stable manner", () => {
+        cy.wrap(ComparatorHelper.stableSort(array, order, orderBy));
       });
+    });
+
+    context("when sorting by complex type", () => {
+      const orderBy = "complexType";
+
+      it("does not change the array", () => {
+        expect(ComparatorHelper.stableSort(array, order, orderBy)).to.eql(array);
+      });
+    });
+  };
+  describe("stableSort", () => {
+    context("ascending order", () => {
+      sort("asc");
+    });
+
+    context("descending order", () => {
+      sort("desc");
     });
   });
 });

@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { ScheduleKey } from "../api/persistance-store.model";
 import * as _ from "lodash";
+import { ScheduleKey } from "../logic/data-access/persistance-store.model";
 
 export const NUMBER_OF_DAYS_IN_WEEK = 7;
 
@@ -79,7 +79,7 @@ export class MonthHelper {
     };
   }
 
-  static numberOfWeeksInMonth(month: number, year: number): number {
+  public static numberOfWeeksInMonth(month: number, year: number): number {
     const {
       daysMissingFromPrevMonth,
       daysMissingFromNextMonth,

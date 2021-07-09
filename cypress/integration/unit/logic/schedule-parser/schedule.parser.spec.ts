@@ -1,57 +1,22 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-/* eslint-disable @typescript-eslint/camelcase */
 /// <reference types="cypress" />
 import { ScheduleParser } from "../../../../../src/logic/schedule-parser/schedule.parser";
-// import { ScheduleDataModel } from "../../../../../src/common-models/schedule-data.model";
-import { ShiftCode, ShiftInfoModel } from "../../../../../src/common-models/shift-info.model";
-import { WorkersInfoModel, WorkerType } from "../../../../../src/common-models/worker-info.model";
-
-function fillWorkerInfo(
-  shifts: ShiftInfoModel,
-  employeeInfo: WorkersInfoModel,
-  section: string[][],
-  sectionType: WorkerType
-): void {
-  section.forEach((element) => {
-    shifts[element[0]] = element.slice(1).map((x) => ShiftCode[x] ?? ShiftCode.W);
-    employeeInfo.type[element[0]] = sectionType;
-    employeeInfo.time[element[0]] = 1;
-  });
-}
-
-//#region data declaration
-//const emptyRow = [""];
-const dates = [28, 29, 30, 31, 1, 2, 3, 4, 5, 6];
-const nurseSection = [
-  ["pielęgniarka 1", "DN", " ", " ", " ", "U", "U", "U", "U", "U", "D"],
-  ["pielęgniarka 2", "DN", "DN", "U", "W", "U", "U", "U", "U", "U", "D"],
-  ["pielęgniarka 3", "N", " ", "L4", "D", "U", "U", "U", "U", "U", "D"],
-  ["pielęgniarka 4", "U", "U", "U", "U", "D", "D", "DN", "L4", "DN", "U"],
-  ["pielęgniarka 5", "DN", "L4", "L4", "W", "L4", "L4", "L4", "L4", "L4", "L4"],
-];
-
-const babysitterSection = [
-  ["opiekunka 1", "L4", "L4", "L4", "L4", "L4", "D", "N", "L4", "L4", "L4"],
-  ["opiekunka 2", "L4", "L4", "L4", "L4", "L4", "L4", "L4", "L4", "L4", "D"],
-];
-
-const exampleData = [
-  [
-    ["Grafik ", "", "", ""],
-    ["Dni miesiąca", ...dates.map((x) => x.toString())],
-  ],
-  [["Dzieci", ...dates.map((x) => "1")]],
-  nurseSection,
+import {
   babysitterSection,
-];
+  exampleData,
+  nurseSection,
+} from "../../../../fixtures/unit/logic/schedule-parser/schedule.parser";
+import {
+  WorkersInfoModel,
+  WorkerType,
+} from "../../../../../src/state/schedule-data/worker-info/worker-info.model";
+import { WorkerShiftsModel } from "../../../../../src/state/schedule-data/workers-shifts/worker-shifts.model";
+import { ShiftCode } from "../../../../../src/state/schedule-data/shifts-types/shift-types.model";
 
-const shifts: ShiftInfoModel = {};
-const employee_info: WorkersInfoModel = { type: {}, time: {}, workerGroup: {} };
-
-fillWorkerInfo(shifts, employee_info, nurseSection, WorkerType.NURSE);
-fillWorkerInfo(shifts, employee_info, babysitterSection, WorkerType.OTHER);
+// #region data declaration
+// const emptyRow = [""];
 
 // const expectedSchedule: ScheduleDataModel = {
 //   schedule_info: { month_number: 10, year: 2020 },
@@ -67,24 +32,31 @@ fillWorkerInfo(shifts, employee_info, babysitterSection, WorkerType.OTHER);
 //   isCorrupted: false,
 // };
 
-//#endregion
+// #endregion
 
 describe("Schedule parser", () => {
+  before(() => {
+    fillWorkerInfo(shifts, employee_info, nurseSection, WorkerType.NURSE);
+    fillWorkerInfo(shifts, employee_info, babysitterSection, WorkerType.OTHER);
+  });
+
+  const shifts: WorkerShiftsModel = {};
+  const employee_info: WorkersInfoModel = { type: {}, time: {}, team: {} };
   const scheduleParser = new ScheduleParser(10, 2020, exampleData, [], []);
   const result = scheduleParser.schedule.getDataModel();
-  //todo update test
-  // it("check if workerType was parsed correctly ", () => {
-  //   for (const [key, value] of Object.entries(result.employee_info.type)) {
-  //     expect(expectedSchedule.employee_info.type[key]).to.equal(value);
-  //   }
-  // });
-  it("length of days must be equal to length of shifts", () => {
+  // todo update test
+  // it("check if workerTyp
+  it("length of days must be was parsed correctly ", () => {
+    //   for (const [key, value] of Object.entries(result.employee_info.type)) {
+    //     expect(expectedSchedule.employee_info.type[key]).to.equal(value);
+    //   }
+    // });equal to length of shifts", () => {
     for (const [, value] of Object.entries(result.shifts)) {
       expect(value).to.have.lengthOf(result.month_info.dates.length);
     }
   });
 
-  //todo update test
+  // todo update test
   // it("should check if input and output shifts are equal", () => {
   //   for (const [key, value] of Object.entries(result.shifts)) {
   //     expect(value).to.eql(expectedSchedule.shifts[key]);
@@ -94,3 +66,16 @@ describe("Schedule parser", () => {
   //   expect(result.employee_info).to.have.keys(Object.keys(expectedSchedule.employee_info));
   // });
 });
+
+function fillWorkerInfo(
+  shifts: WorkerShiftsModel,
+  employeeInfo: WorkersInfoModel,
+  section: string[][],
+  sectionType: WorkerType
+): void {
+  section.forEach((element) => {
+    shifts[element[0]] = element.slice(1).map((x) => ShiftCode[x] ?? ShiftCode.W);
+    employeeInfo.type[element[0]] = sectionType;
+    employeeInfo.time[element[0]] = 1;
+  });
+}

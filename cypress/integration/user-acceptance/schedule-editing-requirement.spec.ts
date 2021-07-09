@@ -1,40 +1,12 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-import { ShiftCode } from "../../../src/common-models/shift-info.model";
 import {
-  ChangeFoundationInfoCellOptions,
-  FoundationInfoRowType,
-  GetWorkerShiftOptions,
-} from "../../support/commands";
+  childrenInfoCell,
+  extraWorkerInfoCell,
+  workerCells,
+} from "../../fixtures/user-acceptance/schedule-editing-requirement";
 
-interface WorkerCellDescription extends GetWorkerShiftOptions {
-  actualShiftCode: ShiftCode;
-  newShiftCode: ShiftCode;
-}
-const workerCells: WorkerCellDescription[] = [
-  {
-    workerGroupIdx: 0,
-    workerIdx: 0,
-    shiftIdx: 6,
-    actualShiftCode: ShiftCode.U,
-    newShiftCode: ShiftCode.D,
-  },
-];
-
-const childrenInfoCell: ChangeFoundationInfoCellOptions = {
-  newValue: 1,
-  actualValue: 24,
-  rowType: FoundationInfoRowType.ChildrenInfoRow,
-  cellIdx: 6,
-};
-
-const extraWorkerInfoCell: ChangeFoundationInfoCellOptions = {
-  newValue: 10,
-  actualValue: 0,
-  rowType: FoundationInfoRowType.ExtraWorkersRow,
-  cellIdx: 6,
-};
 describe("schedule editing requirement", () => {
   beforeEach(() => {
     cy.loadScheduleToMonth();

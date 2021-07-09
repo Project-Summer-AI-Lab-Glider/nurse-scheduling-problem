@@ -3,13 +3,19 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import { StringHelper } from "../../helpers/string.helper";
 import { TranslationHelper } from "../../helpers/translations.helper";
-import { VerboseDate, WeekDay } from "../../common-models/month-info.model";
+import {
+  VerboseDate,
+  WeekDay,
+} from "../../state/schedule-data/foundation-info/foundation-info.model";
 import { PublicHolidaysLogic } from "./public-holidays.logic";
 
 export class MonthInfoLogic {
   public monthNumber: number;
+
   private _verboseDates: VerboseDate[] = [];
+
   private monthDates: number[];
+
   private publicHolidaysLogic: PublicHolidaysLogic;
 
   public get currentDate(): [number, number] {
@@ -29,6 +35,7 @@ export class MonthInfoLogic {
   }
 
   public readonly year: string;
+
   constructor(monthId: string | number, year: string | number, monthDates?: number[]) {
     this.year = year.toString();
     if (typeof monthId == "string") {
@@ -46,7 +53,7 @@ export class MonthInfoLogic {
 
     this.publicHolidaysLogic = new PublicHolidaysLogic(year.toString());
 
-    this._verboseDates = this.createCalendar(this.monthNumber, parseInt(this.year));
+    this._verboseDates = this.createCalendar(this.monthNumber, parseInt(this.year, 10));
   }
 
   private generateMonthDates(monthNumber: number, year: string | number): number[] {
@@ -101,9 +108,8 @@ export class MonthInfoLogic {
       verboseDates.push({
         date: day,
         dayOfWeek: weekDays[date.getDay()],
-        isPublicHoliday: isPublicHoliday,
+        isPublicHoliday,
         isFrozen: false,
-        // TODO: handle automatic frozen state
         month: monthName,
       });
     }

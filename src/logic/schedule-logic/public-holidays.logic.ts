@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 // months as used here are human-readable i.e. go from 1 to 12 (hence + 1)
-
+/* eslint-disable no-bitwise */
 type CustomDate = { day: number; month: number };
 
 export class PublicHolidaysLogic {
@@ -21,7 +21,7 @@ export class PublicHolidaysLogic {
       { day: 25, month: 12 },
       { day: 26, month: 12 },
       // moveable holidays (święta ruchome)
-      ...this.moveableHolidays(parseInt(year)),
+      ...this.moveableHolidays(parseInt(year, 10)),
     ];
   }
 
@@ -59,12 +59,12 @@ export class PublicHolidaysLogic {
 
   // refer to https://pl.wikipedia.org/wiki/Wielkanoc#Metoda_Meeusa/Jonesa/Butchera
   private calculateEasterDate(year: number): Date {
-    const a = year % 19,
-      b = (year / 100) | 0,
-      c = year % 100,
-      h = (19 * a + b - ((b / 4) | 0) - (((b - (((b + 8) / 25) | 0) + 1) / 3) | 0) + 15) % 30,
-      l = (32 + 2 * (b % 4) + 2 * ((c / 4) | 0) - h - (c % 4)) % 7,
-      m = Math.floor((a + 11 * h + 22 * l) / 451);
+    const a = year % 19;
+    const b = (year / 100) | 0;
+    const c = year % 100;
+    const h = (19 * a + b - ((b / 4) | 0) - (((b - (((b + 8) / 25) | 0) + 1) / 3) | 0) + 15) % 30;
+    const l = (32 + 2 * (b % 4) + 2 * ((c / 4) | 0) - h - (c % 4)) % 7;
+    const m = Math.floor((a + 11 * h + 22 * l) / 451);
 
     return new Date(
       year,

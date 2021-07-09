@@ -4,48 +4,95 @@
 import { StringHelper } from "../../../../src/helpers/string.helper";
 
 describe("StringHelper", () => {
-  describe("areEquivalent", () => {
-    it("should return true when equivalent", () => {
-      expect(StringHelper.areEquivalent("str", "str")).to.equal(true);
-      expect(StringHelper.areEquivalent("   str", "STR   ")).to.equal(true);
-    });
-    it("should return false when not equivalent", () => {
-      expect(StringHelper.areEquivalent("int", "str")).to.equal(false);
-      expect(StringHelper.areEquivalent("straight", "string")).to.equal(false);
-    });
-    it("should return false when comparing null values with strings", () => {
-      expect(StringHelper.areEquivalent(null, "str")).to.equal(false);
-      expect(StringHelper.areEquivalent(null, null)).to.equal(false);
-    });
-    it("should return empty string when comparing empty strings", () => {
-      expect(StringHelper.areEquivalent("", "")).to.equal(false);
-      expect(StringHelper.areEquivalent("alice", "")).to.equal(false);
-      expect(StringHelper.areEquivalent("", "alice")).to.equal(false);
-    });
-  });
-
-  describe("includesEquivalent", () => {
-    it("should return true when includes equivalent", () => {
-      expect(StringHelper.includesEquivalent("  AliCE  ", "  lice ")).to.equal(true);
-    });
-    it("should return false when does not include equivalent", () => {
-      expect(StringHelper.includesEquivalent("  AliC E  ", "lice")).to.equal(false);
-    });
-  });
-
   describe("getRawValue", () => {
-    it("should return raw value", () => {
-      expect(StringHelper.getRawValue("  AliCE  ")).to.equal("alice");
-      expect(StringHelper.getRawValue(null)).to.equal("");
-      expect(StringHelper.getRawValue(undefined)).to.equal("");
+    context("when letters are present in both upper and lower cases", () => {
+      it("tuns input into lowercase", () => {
+        expect(StringHelper.getRawValue("AliCE")).to.equal("alice");
+      });
+    });
+
+    context("when input value has leading and trailing whitespaces", () => {
+      it("strips input", () => {
+        expect(StringHelper.getRawValue("  alice   ")).to.equal("alice");
+      });
+    });
+
+    context("when input value is null", () => {
+      it("returns empty string", () => {
+        expect(StringHelper.getRawValue(null)).to.equal("");
+      });
+    });
+
+    context("when input value is undefined", () => {
+      it("returns empty string", () => {
+        expect(StringHelper.getRawValue(undefined)).to.equal("");
+      });
     });
   });
 
   describe("capitalize", () => {
-    it("should capitalize", () => {
-      expect(StringHelper.capitalize("alice")).to.equal("Alice");
-      expect(StringHelper.capitalize("")).to.equal("");
-      expect(StringHelper.capitalize("123")).to.equal("123");
+    context("when input is empty string", () => {
+      it("return empty string", () => {
+        expect(StringHelper.capitalize("")).to.equal("");
+      });
+    });
+
+    context("when input's first letter is lower case ", () => {
+      it("capitalizes first letter", () => {
+        expect(StringHelper.capitalize("str")).to.equal("Str");
+      });
+    });
+
+    context("when input is numerical", () => {
+      it("does not alter the input", () => {
+        expect(StringHelper.capitalize("123")).to.equal("123");
+      });
+    });
+  });
+
+  describe("capitalizeEach", () => {
+    context("when passing single argumetn", () => {
+      context("when input is empty string", () => {
+        it("return empty string", () => {
+          expect(StringHelper.capitalizeEach("")).to.equal("");
+        });
+      });
+
+      context("when input's first letter is lower case ", () => {
+        it("capitalizes whole string", () => {
+          expect(StringHelper.capitalizeEach("str1 str2")).to.equal("Str1 Str2");
+        });
+      });
+
+      context("when input is numerical", () => {
+        it("does not alter the input", () => {
+          expect(StringHelper.capitalizeEach("123")).to.equal("123");
+        });
+      });
+    });
+
+    context("when passing single argumetn", () => {
+      const separtor = ",";
+
+      context("when input is empty string", () => {
+        it("return empty string", () => {
+          expect(StringHelper.capitalizeEach("", separtor)).to.equal("");
+        });
+      });
+
+      context("when input's first letter is lower case ", () => {
+        it("capitalizes whole string", () => {
+          expect(StringHelper.capitalizeEach("str1,str2 str3", separtor)).to.equal(
+            "Str1,Str2 str3"
+          );
+        });
+      });
+
+      context("when input is numerical", () => {
+        it("does not alter the input", () => {
+          expect(StringHelper.capitalizeEach("123,123", separtor)).to.equal("123,123");
+        });
+      });
     });
   });
 });

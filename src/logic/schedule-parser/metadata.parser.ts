@@ -2,14 +2,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { WeekDay } from "../../common-models/month-info.model";
-import { MetadataProvider } from "../providers/metadata-provider.model";
+import { WeekDay } from "../../state/schedule-data/foundation-info/foundation-info.model";
+import { MetadataProvider } from "../schedule-providers/metadata-provider.model";
 import { MonthInfoLogic } from "../schedule-logic/month-info.logic";
-import { InputFileErrorCode, ScheduleError } from "../../common-models/schedule-error.model";
+import {
+  InputFileErrorCode,
+  ScheduleError,
+} from "../../state/schedule-data/schedule-errors/schedule-error.model";
 
 export class MetaDataParser extends MetadataProvider {
   public monthLogic: MonthInfoLogic;
+
   public offset: number;
+
   private _parseErrors: ScheduleError[] = [];
 
   constructor(month: number, year: number, raw: string[] | undefined) {
@@ -46,7 +51,7 @@ export class MetaDataParser extends MetadataProvider {
   }
 
   private extractMetadata(raw: string[]): number {
-    const startOfMonth = raw.findIndex((a) => a.toString() === `1`);
+    const startOfMonth = raw.findIndex((a) => a.toString() === "1");
 
     if (startOfMonth === -1) {
       this.logLoadFIleError(
@@ -81,7 +86,7 @@ export class MetaDataParser extends MetadataProvider {
   }
 
   public get year(): number {
-    return parseInt(this.monthLogic.year);
+    return parseInt(this.monthLogic.year, 10);
   }
 
   public get daysOfWeek(): WeekDay[] {

@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { ShiftCode } from "../../../../src/common-models/shift-info.model";
-import { shiftSectionDataCy } from "../../../../src/components/schedule-page/table/schedule/sections/worker-info-section/worker-info-section.models";
+import { shiftSectionDataCy } from "../../../../src/components/schedule/worker-info-section/worker-info-section.models";
+import { ShiftCode } from "../../../../src/state/schedule-data/shifts-types/shift-types.model";
 import { FoundationInfoRowType } from "../../../support/commands";
-//#region Test data
+// #region Test data
 interface CheckFoundationInfoReadCorrectly {
   scheduleName: "childrens_extraworkers.xlsx" | "extraworkers_childrens.xlsx";
   expectedExtraWorkersNumber: number;
@@ -24,11 +24,11 @@ const checkFoundationInfoReadProperlyData: CheckFoundationInfoReadCorrectly[] = 
     expectedExtraWorkersNumber: 240,
   },
 ];
-//#endregion
+// #endregion
 describe("Load schedule", () => {
-  it("Shoud be able to save file to database and after that load new schedule", () => {
+  it("saves file to database and after that loads new schedule", () => {
     const cell = {
-      workerGroupIdx: 0,
+      teamIdx: 0,
       workerIdx: 0,
       shiftIdx: 6,
     };
@@ -48,7 +48,7 @@ describe("Load schedule", () => {
     });
   });
 
-  it("Should be able to save file and load the exported file", () => {
+  it("saves file and loads the exported file", () => {
     const shiftSection = shiftSectionDataCy(0);
     cy.loadScheduleToMonth();
     cy.get("[data-cy=file-dropdown]").click();
@@ -83,7 +83,7 @@ describe("Load schedule", () => {
   });
 
   checkFoundationInfoReadProperlyData.forEach((testCase) => {
-    it(`Should be able to read file ${testCase.scheduleName}`, () => {
+    it(`reads file ${testCase.scheduleName}`, () => {
       cy.loadScheduleToMonth(testCase.scheduleName, 1, 2021);
       cy.getFoundationInfoCell({
         cellIdx: 0,

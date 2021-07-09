@@ -2,16 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import xlsx from "exceljs";
-import { RevisionType } from "../../api/persistance-store.model";
-import { MonthDataModel } from "../../common-models/schedule-data.model";
+import { RevisionType } from "../data-access/persistance-store.model";
+import { MonthDataModel } from "../../state/schedule-data/schedule-data.model";
 import { Color } from "../../helpers/colors/color.model";
 import { FileHelper } from "../../helpers/file.helper";
-import { PrimaryMonthRevisionDataModel } from "../../state/models/application-state.model";
+import { PrimaryMonthRevisionDataModel } from "../../state/application-state.model";
 import {
   EMPTY_ROW_SIZE,
   SHIFTS_WORKSHEET_NAME,
   WORKERS_WORKSHEET_NAME,
-  WORKSHEET_NAME,
+  SCHEDULE_WORKSHEET_NAME,
 } from "../../helpers/parser.helper";
 import { WorkerExportLogic } from "./worker-export.logic";
 import { ShiftExportLogic } from "./shift-export.logic";
@@ -28,8 +28,11 @@ export interface ScheduleExportLogicOptions {
 
 export class ScheduleExportLogic {
   private scheduleModel: MonthDataModel;
+
   private scheduleInfoExportLogic: ScheduleInfoExportLogic;
+
   private shiftExportLogic: ShiftExportLogic;
+
   private workerExportLogic: WorkerExportLogic;
 
   constructor({
@@ -81,7 +84,7 @@ export class ScheduleExportLogic {
     const workbook = new xlsx.Workbook();
     return [
       workbook,
-      workbook.addWorksheet(WORKSHEET_NAME, {
+      workbook.addWorksheet(SCHEDULE_WORKSHEET_NAME, {
         pageSetup: { paperSize: 9, orientation: "landscape" },
         properties: { defaultColWidth: 5 },
       }),
@@ -103,6 +106,7 @@ export class ScheduleExportLogic {
     workSheet.pageSetup.fitToWidth = 1;
     workSheet.pageSetup.horizontalCentered = true;
   }
+
   // the values are based on w3c recommendations.
   // We need to determine the color with the highest contrast.
   // https://www.w3.org/TR/WCAG20/#relativeluminancedef
@@ -112,7 +116,7 @@ export class ScheduleExportLogic {
     const white = "FFFFFF";
     const rgb = [color.r, color.b, color.g];
     const linearRgb = rgb.map((c) => {
-      c = c / 255.0;
+      c /= 255.0;
       return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
     });
     const luminance = 0.2126 * linearRgb[0] + 0.7152 * linearRgb[1] + 0.0722 * linearRgb[2];
@@ -120,7 +124,7 @@ export class ScheduleExportLogic {
   }
 
   public static rgbaToArgbHex(color: Color): string {
-    const toHex = (num: number): string => ("0" + num.toString(16)).slice(-2);
+    const toHex = (num: number): string => `0${num.toString(16)}`.slice(-2);
     const c = color;
     return `${toHex(c.a)}${toHex(c.r)}${toHex(c.g)}${toHex(c.b)}`;
   }

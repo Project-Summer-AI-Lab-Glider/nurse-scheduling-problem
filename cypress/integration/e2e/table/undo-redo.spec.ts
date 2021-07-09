@@ -4,7 +4,7 @@
 /// <reference path="../../../support/index.d.ts" />
 
 import { GetWorkerShiftOptions } from "../../../support/commands";
-import { ShiftCode } from "../../../../src/common-models/shift-info.model";
+import { ShiftCode } from "../../../../src/state/schedule-data/shifts-types/shift-types.model";
 
 interface TestCase {
   testedShiftCell: GetWorkerShiftOptions;
@@ -16,7 +16,7 @@ const daysFromPrevMonths = 6;
 const testCases: TestCase[] = [
   {
     testedShiftCell: {
-      workerGroupIdx: 0,
+      teamIdx: 0,
       workerIdx: 0,
       shiftIdx: daysFromPrevMonths + 9,
     },
@@ -25,7 +25,7 @@ const testCases: TestCase[] = [
   },
   {
     testedShiftCell: {
-      workerGroupIdx: 1,
+      teamIdx: 1,
       workerIdx: 3,
       shiftIdx: daysFromPrevMonths + 2,
     },
@@ -46,7 +46,7 @@ context("Undo/Redo test", () => {
   });
 
   testCases.forEach((testCase) => {
-    it(`Should change worker (worker group: ${testCase.testedShiftCell.workerGroupIdx}) shift and
+    it(`changes worker (team: ${testCase.testedShiftCell.teamIdx}) shifts and
        use undo and redo buttons to set proper cell state`, () => {
       performShiftChanges(testCase);
 
@@ -59,8 +59,8 @@ context("Undo/Redo test", () => {
   });
 
   testCases.forEach((testCase) => {
-    it(`Should change worker (worker group: ${testCase.testedShiftCell.workerGroupIdx}shift and
-       use undo and redo shortcuts to set proper cell state`, () => {
+    it(`changes worker (team: ${testCase.testedShiftCell.teamIdx} shift and
+       uses undo and redo shortcuts to set proper cell state`, () => {
       performShiftChanges(testCase);
 
       cy.get("body").type("{ctrl}{z}");
@@ -73,9 +73,9 @@ context("Undo/Redo test", () => {
 });
 
 context("Edit mode test", () => {
-  it("Save button should be disabled when there are no changes", () => {
+  it("save button is disabled when there are no changes", () => {
     const cell = {
-      workerGroupIdx: 0,
+      teamIdx: 0,
       workerIdx: 0,
       shiftIdx: 6,
     };

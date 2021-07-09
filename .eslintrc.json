@@ -1,0 +1,119 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "ignorePatterns": ["snapshots.js"],
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "react-app",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:cypress/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "@typescript-eslint", "cypress", "header"],
+  "rules": {
+    "no-debugger": "off",
+    "quotes": "off", 
+    "no-underscore-dangle": ["error", { "allowAfterThis": true, "allow": ["_rev", "_id"] }],
+    "camelcase": [
+      "error",
+      {
+        "allow": [
+          "schedule_info",
+          "month_info",
+          "employee_info",
+          "shift_types",
+          "month_number",
+          "children_number",
+          "extra_workers",
+          "frozen_shifts",
+          "day_time",
+          "include_docs",
+          "is_working_shift"
+        ]
+      }
+    ],
+    "import/order": "off",
+    "spaced-comment": "off",
+    "no-unused-vars": "off",
+    "consistent-return": ["error", { "treatUndefinedAsUnspecified": false }],
+    "import/no-named-as-default": "off",
+    "object-curly-newline": "off",
+    "import/no-cycle": "off",
+    "no-console": "warn",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/triple-slash-reference": "off",
+    "class-methods-use-this": "off",
+    "no-case-declarations": "off",
+    "no-plusplus": "off",
+    "react/jsx-props-no-spreading": "off",
+    "function-paren-newline": "off",
+    "implicit-arrow-linebreak": "off",
+    "comma-dangle": "off",
+    "max-len": "off",
+    "max-classes-per-file": "off",
+    "react/no-unused-prop-types": "off",
+    "no-void": "off",
+    "import/no-duplicates": "off",
+    "no-else-return": "off",
+    "react/no-danger": "off",
+    "import/newline-after-import": "off",
+    // accessibility
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/no-autofocus": "off",
+    // fix me
+    "react/no-array-index-key": "off",
+    "no-param-reassign": "off",
+    "no-shadow": "off",
+    "react/destructuring-assignment": "off",
+    "no-nested-ternary": "off",
+    "react/require-default-props": "off",
+    "no-await-in-loop": "off",
+    "prefer-destructuring": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts?(x)"],
+      "rules": {
+        "react/jsx-filename-extension": [
+          1,
+          {
+            "extensions": [".tsx"]
+          }
+        ],
+        "import/extensions": [
+          "error",
+          "ignorePackages",
+          {
+            "ts": "never",
+            "tsx": "never"
+          }
+        ]
+      }
+    }
+  ],
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
+  }
+}

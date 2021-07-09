@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, ReactNode, useContext, useState } from "react";
 
 export enum AppMode {
   SCHEDULE = "SCHEDULE",
@@ -15,7 +15,7 @@ export interface AppConfigOptions {
 
 export const AppConfigContext = createContext<AppConfigOptions | null>(null);
 
-export function AppConfigProvider({ children }): JSX.Element {
+export function AppConfigProvider({ children }: { children: ReactNode }): JSX.Element {
   const [mode, setMode] = useState<AppMode>(AppMode.SCHEDULE);
 
   return (

@@ -1,18 +1,21 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+/* eslint-disable import/no-extraneous-dependencies */
 import "cypress-file-upload";
-import { LocalStorageProvider } from "../../src/api/local-storage-provider.model";
-import { ShiftCode } from "../../src/common-models/shift-info.model";
 import {
   baseCellDataCy,
   CellType,
-} from "../../src/components/schedule-page/table/schedule/schedule-parts/base-cell/base-cell.models";
-import { baseRowDataCy } from "../../src/components/schedule-page/table/schedule/schedule-parts/base-row.models";
-import { shiftSectionDataCy } from "../../src/components/schedule-page/table/schedule/sections/worker-info-section/worker-info-section.models";
-import { summaryCellDataCy } from "../../src/components/summarytable/summarytable-cell.models";
-import { summaryRowDataCy } from "../../src/components/summarytable/summarytable-row.models";
-import { summaryTableSectionDataCy } from "../../src/components/summarytable/summarytable-section.models";
+} from "../../src/components/schedule/base/base-cell/base-cell.models";
+import { baseRowDataCy } from "../../src/components/schedule/base/base-row/base-row.models";
+import { shiftSectionDataCy } from "../../src/components/schedule/worker-info-section/worker-info-section.models";
+import { summaryCellDataCy } from "../../src/components/schedule/worker-info-section/summary-table/summarytable-cell.models";
+import { summaryRowDataCy } from "../../src/components/schedule/worker-info-section/summary-table/summarytable-row.models";
+import { summaryTableSectionDataCy } from "../../src/components/schedule/worker-info-section/summary-table/summarytable-section.models";
+import { ShiftCode } from "../../src/state/schedule-data/shifts-types/shift-types.model";
+import { LocalMonthPersistProvider } from "../../src/logic/data-access/month-persistance-provider";
+
+/* eslint-disable @typescript-eslint/no-var-requires */
 require("@cypress/snapshot").register();
 
 export type CypressScreenshotOptions = Partial<
@@ -20,7 +23,7 @@ export type CypressScreenshotOptions = Partial<
 >;
 
 export interface GetWorkerShiftOptions {
-  workerGroupIdx: number;
+  teamIdx: number;
   workerIdx: number;
   shiftIdx: number;
   selector?: CellType;
@@ -32,7 +35,7 @@ export interface ChangeWorkerShiftOptions extends GetWorkerShiftOptions {
   newShiftCode: ShiftCode;
 }
 export interface CheckHoursInfoOptions {
-  workerGroupIdx: number;
+  teamIdx: number;
   workerIdx: number;
   hoursInfo: HoursInfo;
 }
@@ -52,25 +55,29 @@ export type ScheduleName =
   | "childrens_extraworkers.xlsx"
   | "extraworkers_childrens.xlsx"
   | "small_test_schedule.xlsx";
-const TEST_SCHEDULE_MONTH = 10;
-const TEST_SCHEDULE_YEAR = 2020;
+export const TEST_SCHEDULE_MONTH = 10;
+export const TEST_SCHEDULE_YEAR = 2020;
 
 Cypress.Commands.add(
   "loadScheduleToMonth",
   (scheduleName: ScheduleName = "example.xlsx", month: number, year: number) => {
-    cy.wrap(new LocalStorageProvider().reloadDb()).then(() => {
+    cy.wrap(new LocalMonthPersistProvider().reloadDb()).then(() => {
       cy.clock(Date.UTC(year ?? TEST_SCHEDULE_YEAR, month ?? TEST_SCHEDULE_MONTH, 15), ["Date"]);
       cy.visit("/");
       cy.get("[data-cy=file-input]").attachFile(scheduleName);
-      cy.get(`[data-cy=workerGroup0ShiftsTable]`, { timeout: 10000 });
+      cy.get("[data-cy=team0ShiftsTable]", { timeout: 10000 });
     });
   }
 );
 
+Cypress.Commands.add("unloadSchedule", () => {
+  cy.wrap(new LocalMonthPersistProvider().reloadDb()).then(() => cy.visit("/"));
+});
+
 Cypress.Commands.add(
   "getWorkerShift",
-  ({ workerGroupIdx, workerIdx, shiftIdx, selector = "cell" }: GetWorkerShiftOptions) => {
-    const section = shiftSectionDataCy(workerGroupIdx);
+  ({ teamIdx, workerIdx, shiftIdx, selector = "cell" }: GetWorkerShiftOptions) => {
+    const section = shiftSectionDataCy(teamIdx);
     const row = baseRowDataCy(workerIdx);
     const cell = baseCellDataCy(shiftIdx, selector);
     return cy.get(`[data-cy=${section}] [data-cy=${row}] [data-cy=${cell}]`);
@@ -88,27 +95,27 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add("useAutocomplete", (newShiftCode: ShiftCode) => {
-  return cy.get(`[data-cy=autocomplete-${newShiftCode}]`).click({ force: true });
-});
+Cypress.Commands.add("useAutocomplete", (newShiftCode: ShiftCode) =>
+  cy.get(`[data-cy=autocomplete-${newShiftCode}]`).click({ force: true })
+);
 
 Cypress.Commands.add(
   "changeWorkerShift",
   ({ newShiftCode, ...getWorkerShiftOptions }: ChangeWorkerShiftOptions) => {
-    cy.getWorkerShift(getWorkerShiftOptions).click();
+    cy.getWorkerShift(getWorkerShiftOptions).click({ force: true });
     cy.useAutocomplete(newShiftCode);
   }
 );
 
 Cypress.Commands.add(
   "checkHoursInfo",
-  ({ workerGroupIdx, workerIdx, hoursInfo }: CheckHoursInfoOptions) => {
-    const section = summaryTableSectionDataCy(workerGroupIdx);
+  ({ teamIdx, workerIdx, hoursInfo }: CheckHoursInfoOptions) => {
+    const section = summaryTableSectionDataCy(teamIdx);
     const row = summaryRowDataCy(workerIdx);
     Object.keys(HoursInfoCells)
       .filter((key) => isNaN(Number(HoursInfoCells[key])))
       .forEach((key) => {
-        const cell = summaryCellDataCy(parseInt(key));
+        const cell = summaryCellDataCy(parseInt(key, 10));
         cy.get(`[data-cy=${section}] [data-cy=${row}] [data-cy=${cell}]`).should(
           "contain",
           hoursInfo[key]
@@ -117,9 +124,7 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add("saveToDatabase", () => {
-  return cy.get("[data-cy=save-schedule-button").click();
-});
+Cypress.Commands.add("saveToDatabase", () => cy.get("[data-cy=save-schedule-button").click());
 
 Cypress.Commands.add("enterEditMode", () => {
   cy.get("[data-cy=edit-mode-button]").click();
@@ -139,10 +144,10 @@ Cypress.Commands.add(
     if (Cypress.env("makeScreenshots") !== "true") {
       return cy;
     }
-    cy.get("#header").invoke("css", "position", "absolute");
+    cy.get("#app-header").invoke("css", "position", "absolute");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.screenshot(cyScreenshotOptions).wait(awaitTime);
-    return cy.get("#header").invoke("css", "position", null);
+    return cy.get("#app-header").invoke("css", "position", null);
   }
 );
 

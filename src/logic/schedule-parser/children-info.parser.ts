@@ -1,14 +1,18 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-import { ChildrenInfoProvider } from "../providers/children-info-provider.model";
-import { InputFileErrorCode, ScheduleError } from "../../common-models/schedule-error.model";
+import { ChildrenInfoProvider } from "../schedule-providers/children-info-provider.model";
+import {
+  InputFileErrorCode,
+  ScheduleError,
+} from "../../state/schedule-data/schedule-errors/schedule-error.model";
 import { MetaDataParser } from "./metadata.parser";
 
 export const DEFAULT_CHILDREN_NUMBER = 20;
 
 export class ChildrenInfoParser implements ChildrenInfoProvider {
   private _parseErrors: ScheduleError[] = [];
+
   private children: number[];
 
   constructor(private metaData: MetaDataParser, data?: string[]) {
@@ -33,9 +37,7 @@ export class ChildrenInfoParser implements ChildrenInfoProvider {
   private generateChildren(raw?: string[]): number[] {
     if (!raw) {
       this.logLoadFileError(
-        "Nie znaleziono informacji o <b>liczbie dzieci</b>. Dla każdego dnia przyjęto wartość " +
-          DEFAULT_CHILDREN_NUMBER +
-          "."
+        `Nie znaleziono informacji o <b>liczbie dzieci</b>. Dla każdego dnia przyjęto wartość ${DEFAULT_CHILDREN_NUMBER}.`
       );
       const N = this.metaData.dayCount;
       const children = Array(N);
@@ -58,14 +60,12 @@ export class ChildrenInfoParser implements ChildrenInfoProvider {
 
     const children = Array<number>();
     for (let i = 0; i < this.metaData.dayCount; i++) {
-      const numDay = parseInt(slicedChildrenRow[i]);
+      const numDay = parseInt(slicedChildrenRow[i], 10);
       if (isNaN(numDay) || numDay < 0) {
         this.logLoadFileError(
-          "Nieoczekiwana wartość w sekcji <b>dzieci</b> w dniu " +
-            (i + 1) +
-            ". Przyjęto, że liczba dzieci wynosi " +
-            DEFAULT_CHILDREN_NUMBER +
-            "."
+          `Nieoczekiwana wartość w sekcji <b>dzieci</b> w dniu ${
+            i + 1
+          }. Przyjęto, że liczba dzieci wynosi ${DEFAULT_CHILDREN_NUMBER}.`
         );
         children.push(DEFAULT_CHILDREN_NUMBER);
       } else {

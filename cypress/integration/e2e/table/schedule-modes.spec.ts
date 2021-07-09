@@ -1,10 +1,10 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-import { ShiftCode } from "../../../../src/common-models/shift-info.model";
+import { ShiftCode } from "../../../../src/state/schedule-data/shifts-types/shift-types.model";
 
 const testedCell = {
-  workerGroupIdx: 0,
+  teamIdx: 0,
   workerIdx: 0,
   shiftIdx: 6,
   initialShiftCode: ShiftCode.U,
@@ -24,13 +24,17 @@ describe("Schedule modes spec", () => {
       );
     });
   });
-
   context("when in edit mode", () => {
     beforeEach(() => {
       cy.enterEditMode();
     });
-
-    it("Should be able to change shift", () => {
+    it("does not show changes in preview when changes are not saved", () => {
+      cy.changeWorkerShift({ ...testedCell, newShiftCode: testedCell.desiredShiftCode });
+      cy.get("[data-cy=leave-edit-mode]").click();
+      cy.get("[data-cy=bt-leave-edit-save-no]").click();
+      cy.checkWorkerShift({ ...testedCell, desiredShiftCode: testedCell.initialShiftCode });
+    });
+    it("changes shift", () => {
       cy.checkWorkerShift({ ...testedCell, desiredShiftCode: testedCell.initialShiftCode });
       cy.changeWorkerShift({ ...testedCell, newShiftCode: testedCell.desiredShiftCode });
       cy.checkWorkerShift({ ...testedCell });

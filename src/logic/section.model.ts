@@ -12,21 +12,6 @@ export enum ExtraWorkersSectionKey {
   ExtraWorkersCount = "Pracownicy dzienni",
 }
 
-export class FoundationSectionKey {
-  static get ChildrenCount(): string {
-    return ChildrenSectionKey.RegisteredChildrenCount;
-  }
-  static get ExtraWorkersCount(): string {
-    return ExtraWorkersSectionKey.ExtraWorkersCount;
-  }
-  static get NurseCount(): string {
-    return "Pielęgniarki";
-  }
-  static get BabysittersCount(): string {
-    return "Opiekunowie";
-  }
-}
-
 export enum MetaDataSectionKey {
   Month = "miesiąc",
   Year = "rok",

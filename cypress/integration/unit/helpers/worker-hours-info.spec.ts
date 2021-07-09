@@ -2,19 +2,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import * as _ from "lodash";
-import {
-  NotWorkingShift,
-  NotWorkingShiftType,
-  Shift,
-  ShiftCode,
-  SHIFTS,
-} from "../../../../src/common-models/shift-info.model";
-import { ContractType } from "../../../../src/common-models/worker-info.model";
-import { MonthDataArray, ShiftHelper } from "../../../../src/helpers/shifts.helper";
+import { MonthDataArray } from "../../../../src/helpers/month-data-array.model";
+import { ShiftHelper } from "../../../../src/helpers/shifts.helper";
 import {
   DEFAULT_NORM_SUBTRACTION,
   WorkerHourInfo,
-} from "../../../../src/helpers/worker-hours-info.model";
+} from "../../../../src/logic/schedule-logic/worker-hours-info.logic";
+
+import {
+  SHIFTS,
+  ShiftCode,
+  Shift,
+  NotWorkingShift,
+  NotWorkingShiftType,
+} from "../../../../src/state/schedule-data/shifts-types/shift-types.model";
+import { ContractType } from "../../../../src/state/schedule-data/worker-info/worker-info.model";
 import {
   workerTestData,
   WorkerTestDataInstance,
@@ -118,22 +120,22 @@ describe("Worker hours info", () => {
     const shifts = dates.map((_) => ShiftCode.W);
     const primaryShifts = shifts;
     const calculateWorkerDataAction = (): WorkerHourInfo =>
-      WorkerHourInfo.fromWorkerInfo(
+      WorkerHourInfo.fromWorkerInfo({
         shifts,
-        primaryShifts as MonthDataArray<ShiftCode>,
-        1,
-        ContractType.EMPLOYMENT_CONTRACT,
-        testedMonthParams.monthNumber,
-        testedMonthParams.year,
+        primaryScheduleWorkerShifts: primaryShifts as MonthDataArray<ShiftCode>,
+        workerNorm: 1,
+        workerEmploymentContract: ContractType.EMPLOYMENT_CONTRACT,
+        month: testedMonthParams.monthNumber,
+        year: testedMonthParams.year,
         dates,
-        SHIFTS
-      );
+        shiftTypes: SHIFTS,
+      });
 
     expect(calculateWorkerDataAction).to.not.throw();
   });
 });
 
-//#region helper function
+// #region helper function
 interface RequiredTimeForPrimaryAndActualSchedule {
   primaryScheduleWorkerHoursInfo: WorkerHourInfo;
   actualScheduleWorkerHoursInfo: WorkerHourInfo;
@@ -144,16 +146,17 @@ function calculateWorkerHoursFromWorkerInstance(
   primaryWorkerShifts?: ShiftCode[],
   actualWorkerShifts?: ShiftCode[]
 ): WorkerHourInfo {
-  return WorkerHourInfo.fromWorkerInfo(
-    actualWorkerShifts ?? workerInstance.actualWorkerShifts,
-    (primaryWorkerShifts as MonthDataArray<ShiftCode>) ?? workerInstance.primaryWorkerShifts,
-    workerInstance.workerNorm,
-    workerInstance.workerContract,
-    workerInstance.month,
-    workerInstance.year,
-    workerInstance.dates,
-    SHIFTS
-  );
+  return WorkerHourInfo.fromWorkerInfo({
+    shifts: actualWorkerShifts ?? workerInstance.actualWorkerShifts,
+    primaryScheduleWorkerShifts:
+      (primaryWorkerShifts as MonthDataArray<ShiftCode>) ?? workerInstance.primaryWorkerShifts,
+    workerNorm: workerInstance.workerNorm,
+    workerEmploymentContract: workerInstance.workerContract,
+    month: workerInstance.month,
+    year: workerInstance.year,
+    dates: workerInstance.dates,
+    shiftTypes: SHIFTS,
+  });
 }
 function calculateRequiredTimeBeforeAndAfterShiftReplacement(
   workerInstance: WorkerTestDataInstance,
@@ -162,14 +165,14 @@ function calculateRequiredTimeBeforeAndAfterShiftReplacement(
 ): RequiredTimeForPrimaryAndActualSchedule {
   const testedShiftIndex = 0;
   const primaryWorkerShifts = [...workerInstance.primaryWorkerShifts];
-  primaryWorkerShifts[testedShiftIndex] = primaryShift.code as ShiftCode;
+  primaryWorkerShifts[testedShiftIndex] = primaryShift.code;
   const actualWorkerShifts = [...primaryWorkerShifts];
   const primaryScheduleWorkerHoursInfoRequiredTime = calculateWorkerHoursFromWorkerInstance(
     workerInstance,
     primaryWorkerShifts,
     actualWorkerShifts
   );
-  actualWorkerShifts[testedShiftIndex] = primaryShiftReplacement.code as ShiftCode;
+  actualWorkerShifts[testedShiftIndex] = primaryShiftReplacement.code;
   const actualScheduleWorkerHoursInfoRequiredTime = calculateWorkerHoursFromWorkerInstance(
     workerInstance,
     primaryWorkerShifts,
@@ -181,10 +184,10 @@ function calculateRequiredTimeBeforeAndAfterShiftReplacement(
   };
 }
 
-function findFreeShift(shiftType: NotWorkingShiftType) {
+function findFreeShift(shiftType: NotWorkingShiftType): NotWorkingShift {
   return Object.values(SHIFTS).find(
     (shift) => shift.isWorkingShift === false && shift.type === shiftType
   ) as NotWorkingShift;
 }
 
-//#endregion
+// #endregion

@@ -1,10 +1,11 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-import React, { ReactNode } from "react";
-import { useState } from "react";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import React, { ReactNode, useState } from "react";
+import * as S from "./folding-eection.styled";
+
 interface FoldingSectionOptions {
   name: string;
   children: ReactNode;
@@ -18,19 +19,18 @@ interface FoldingSectionOptions {
 export function FoldingSection({ name, children }: FoldingSectionOptions): JSX.Element {
   const [opened, setOpened] = useState(false);
   return (
-    <div className="foldingSection" data-cy="folding-section">
-      <div className="header">
-        <div
+    <S.Wrapper data-cy="folding-section">
+      <S.SeparatorWrapper>
+        <S.LabelWrapper
           onClick={(): void => setOpened((prev) => !prev)}
-          className="text"
           data-cy="open-folding-section"
         >
           <span>{opened ? <ExpandMoreIcon /> : <ChevronRightIcon />}</span>
           <span>{name}</span>
-        </div>
-        <hr className="middle" />
-      </div>
+        </S.LabelWrapper>
+        <S.Separator />
+      </S.SeparatorWrapper>
       <div style={{ display: opened ? "initial" : "none" }}>{children}</div>
-    </div>
+    </S.Wrapper>
   );
 }

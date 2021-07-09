@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import xlsx from "exceljs";
-import { MonthDataModel } from "../../common-models/schedule-data.model";
+import { MonthDataModel } from "../../state/schedule-data/schedule-data.model";
 import { EMPTY_ROW, ParserHelper, SHIFT_HEADERS } from "../../helpers/parser.helper";
 import { CELL_MARGIN, ScheduleExportLogic } from "./schedule-export.logic";
 
@@ -66,8 +66,8 @@ export class ShiftExportLogic {
       shifts.push([
         name.name,
         name.code,
-        name.from,
-        name.to,
+        name.isWorkingShift ? name.from : "-",
+        name.isWorkingShift ? name.to : "-",
         ParserHelper.translateBooleanToString(name.isWorkingShift).toUpperCase(),
         name.color,
       ])

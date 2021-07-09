@@ -1,10 +1,9 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-/* eslint-disable @typescript-eslint/camelcase */
 
-import { ContractType, WorkerGroup } from "../../src/common-models/worker-info.model";
-import { ScheduleDataModel } from "../../src/common-models/schedule-data.model";
+import { ScheduleDataModel } from "../../src/state/schedule-data/schedule-data.model";
+import { ContractType, Team } from "../../src/state/schedule-data/worker-info/worker-info.model";
 
 export default {
   schedule_info: { UUID: "0", month_number: 1, year: 2021 },
@@ -180,31 +179,31 @@ export default {
       "Opiekunka 12": ContractType.EMPLOYMENT_CONTRACT,
       "Opiekunka 13": ContractType.EMPLOYMENT_CONTRACT,
     },
-    workerGroup: {
-      "Opiekunka 1": "Zespół 1" as WorkerGroup,
-      "Opiekunka 2": "Zespół 1" as WorkerGroup,
-      "Opiekunka 3": "Zespół 1" as WorkerGroup,
-      "Opiekunka 4": "Zespół 1" as WorkerGroup,
-      "Opiekunka 5": "Zespół 1" as WorkerGroup,
-      "Opiekunka 6": "Zespół 1" as WorkerGroup,
-      "Opiekunka 7": "Zespół 1" as WorkerGroup,
-      "Opiekunka 8": "Zespół 1" as WorkerGroup,
-      "Opiekunka 9": "Zespół 1" as WorkerGroup,
-      "Opiekunka 10": "Zespół 1" as WorkerGroup,
-      "Opiekunka 11": "Zespół 1" as WorkerGroup,
-      "Opiekunka 12": "Zespół 1" as WorkerGroup,
-      "Opiekunka 13": "Zespół 1" as WorkerGroup,
-      "Pielęgniarka 1": "Zespół 2" as WorkerGroup,
-      "Pielęgniarka 2": "Zespół 2" as WorkerGroup,
-      "Pielęgniarka 3": "Zespół 2" as WorkerGroup,
-      "Pielęgniarka 4": "Zespół 2" as WorkerGroup,
-      "Pielęgniarka 5": "Zespół 2" as WorkerGroup,
-      "Pielęgniarka 6": "Zespół 2" as WorkerGroup,
-      "Pielęgniarka 7": "Zespół 2" as WorkerGroup,
-      "Pielęgniarka 8": "Zespół 2" as WorkerGroup,
-      "Pielęgniarka 9": "Zespół 2" as WorkerGroup,
-      "Pielęgniarka 10": "Zespół 2" as WorkerGroup,
-      "Pielęgniarka 11": "Zespół 2" as WorkerGroup,
+    team: {
+      "Opiekunka 1": "Zespół 1" as Team,
+      "Opiekunka 2": "Zespół 1" as Team,
+      "Opiekunka 3": "Zespół 1" as Team,
+      "Opiekunka 4": "Zespół 1" as Team,
+      "Opiekunka 5": "Zespół 1" as Team,
+      "Opiekunka 6": "Zespół 1" as Team,
+      "Opiekunka 7": "Zespół 1" as Team,
+      "Opiekunka 8": "Zespół 1" as Team,
+      "Opiekunka 9": "Zespół 1" as Team,
+      "Opiekunka 10": "Zespół 1" as Team,
+      "Opiekunka 11": "Zespół 1" as Team,
+      "Opiekunka 12": "Zespół 1" as Team,
+      "Opiekunka 13": "Zespół 1" as Team,
+      "Pielęgniarka 1": "Zespół 2" as Team,
+      "Pielęgniarka 2": "Zespół 2" as Team,
+      "Pielęgniarka 3": "Zespół 2" as Team,
+      "Pielęgniarka 4": "Zespół 2" as Team,
+      "Pielęgniarka 5": "Zespół 2" as Team,
+      "Pielęgniarka 6": "Zespół 2" as Team,
+      "Pielęgniarka 7": "Zespół 2" as Team,
+      "Pielęgniarka 8": "Zespół 2" as Team,
+      "Pielęgniarka 9": "Zespół 2" as Team,
+      "Pielęgniarka 10": "Zespół 2" as Team,
+      "Pielęgniarka 11": "Zespół 2" as Team,
     },
   },
   shifts: {

@@ -1,14 +1,14 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-import { VerboseDate, WeekDay } from "../common-models/month-info.model";
+import * as _ from "lodash";
+import { VerboseDate, WeekDay } from "../state/schedule-data/foundation-info/foundation-info.model";
 import { PublicHolidaysLogic } from "../logic/schedule-logic/public-holidays.logic";
 import { CellColorSet } from "./colors/cell-color-set.model";
 import { ColorHelper } from "./colors/color.helper";
 import { Colors } from "./colors/color.model";
-import * as _ from "lodash";
-import { MonthDataArray } from "./shifts.helper";
-import { Opaque } from "../common-models/type-utils";
+import { MonthDataArray } from "./month-data-array.model";
+import { Opaque } from "../utils/type-utils";
 
 export type WorkingDay = Opaque<"WorkingDay", VerboseDate>;
 export class VerboseDateHelper {
@@ -45,8 +45,8 @@ export class VerboseDateHelper {
     return !(date.dayOfWeek === WeekDay.SA || date.dayOfWeek === WeekDay.SU);
   }
 
-  /** 
-   According to the law, for each holiday, in other day than Sunday 
+  /**
+   According to the law, for each holiday, in other day than Sunday
    an employer should provide an employee with one day off.
   */
   static countDayOffsFromHolidays(

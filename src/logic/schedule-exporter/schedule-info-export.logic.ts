@@ -2,14 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import xlsx from "exceljs";
-import { VerboseDate } from "../../common-models/month-info.model";
-import { MonthDataModel } from "../../common-models/schedule-data.model";
-import { ShiftCode } from "../../common-models/shift-info.model";
+import * as _ from "lodash";
+import { VerboseDate } from "../../state/schedule-data/foundation-info/foundation-info.model";
+import { MonthDataModel } from "../../state/schedule-data/schedule-data.model";
+import { ShiftCode } from "../../state/schedule-data/shifts-types/shift-types.model";
 import { ColorHelper } from "../../helpers/colors/color.helper";
 import { ShiftHelper } from "../../helpers/shifts.helper";
 import { TranslationHelper } from "../../helpers/translations.helper";
-import { WorkerHourInfo } from "../../helpers/worker-hours-info.model";
-import { PrimaryMonthRevisionDataModel } from "../../state/models/application-state.model";
+import { PrimaryMonthRevisionDataModel } from "../../state/application-state.model";
 import { MonthInfoLogic } from "../schedule-logic/month-info.logic";
 import {
   ChildrenSectionKey,
@@ -18,11 +18,11 @@ import {
   MetaDataSectionKey,
 } from "../section.model";
 import { EMPTY_ROW } from "../../helpers/parser.helper";
-import { groupWorkers } from "../../components/schedule-page/table/schedule/use-worker-groups";
-import { WorkerInfo } from "../../components/namestable/use-worker-info";
+import { groupWorkersByTeam } from "../../hooks/use-teams";
+import { WorkerInfo } from "../../hooks/use-worker-info";
 import { MonthHelper } from "../../helpers/month.helper";
-import * as _ from "lodash";
 import { ScheduleExportLogic } from "./schedule-export.logic";
+import { WorkerHourInfo } from "../schedule-logic/worker-hours-info.logic";
 
 export interface ScheduleExportLogicOptions {
   scheduleModel: MonthDataModel;
@@ -43,9 +43,13 @@ const METADATA_START_COL = 1;
 
 export class ScheduleInfoExportLogic {
   private scheduleModel: MonthDataModel;
+
   private primaryScheduleModel?: PrimaryMonthRevisionDataModel;
+
   private overtimeExport?: boolean;
+
   private extraWorkersExport: boolean;
+
   private scheduleLen: number;
 
   constructor({
@@ -92,13 +96,13 @@ export class ScheduleInfoExportLogic {
 
     schedule.push(EMPTY_ROW);
 
-    const groupedWorkers = groupWorkers(this.scheduleModel);
-    Object.keys(groupedWorkers).forEach((group) => {
-      let groupRows = this.createGroupWorkersRows(groupedWorkers[group]);
+    const workersByTeam = groupWorkersByTeam(this.scheduleModel);
+    Object.keys(workersByTeam).forEach((team) => {
+      let teamRows = this.createGroupWorkersRows(workersByTeam[team]);
       if (this.overtimeExport) {
-        groupRows = this.extendWithOvertimeInfo(groupRows);
+        teamRows = this.extendWithOvertimeInfo(teamRows);
       }
-      schedule.push(...groupRows);
+      schedule.push(...teamRows);
       schedule.push(EMPTY_ROW);
     });
 
@@ -191,7 +195,7 @@ export class ScheduleInfoExportLogic {
   private styleShiftRow(row: xlsx.Row): void {
     const { month, year } = this.scheduleModel.scheduleKey;
     const monthLogic = new MonthInfoLogic(month, year, this.scheduleModel.month_info?.dates || []);
-    const verboseDates = monthLogic.verboseDates;
+    const { verboseDates } = monthLogic;
 
     const calendarDataMargin = -2;
 
@@ -263,14 +267,11 @@ export class ScheduleInfoExportLogic {
       .join("  |  ")
       .slice(9)
       .toUpperCase();
-    infoStr =
-      infoStr.slice(0, infoStr.length - 2) +
-      " " +
-      WorkerHourInfo.calculateWorkNormForMonth(
-        scheduleModel?.scheduleKey.month,
-        scheduleModel?.scheduleKey.year
-      );
-    return ["GRAFIK " + infoStr];
+    infoStr = `${infoStr.slice(0, infoStr.length - 2)} ${WorkerHourInfo.calculateWorkNormForMonth(
+      scheduleModel?.scheduleKey.month,
+      scheduleModel?.scheduleKey.year
+    )}`;
+    return [`GRAFIK ${infoStr}`];
   }
 
   private static createChildrenInfoSection(

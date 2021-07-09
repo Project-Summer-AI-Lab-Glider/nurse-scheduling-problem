@@ -1,0 +1,12 @@
+{
+    "extends": ".eslintrc.json",
+    "rules": {
+        "no-debugger": "error",
+        "header/header": ["error", "config/license-header.js"],
+        "import/order": "error",
+        "spaced-comment": "error",
+        "quotes": ["error", "double", { "avoidEscape": true }],
+        "no-console": "error",
+        "import/newline-after-import": "error"
+    }
+}
