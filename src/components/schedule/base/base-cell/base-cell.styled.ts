@@ -2,68 +2,63 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import styled from "styled-components";
-import { colors, fontSizeXs } from "../../../../assets/css-consts";
 import { ErrorPopper } from "../../../poppers/error-popper/error-popper.component";
 
 export const Wrapper = styled.div`
-  flex: 1 1 auto;
-  border-left: 1px solid ${colors.tableBorderGrey};
+  flex: 1;
+  height: 26px;
   align-items: center;
-  width: 120%;
-  height: 100%;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
   cursor: cell;
   padding: 0;
   overflow: hidden;
-  color: ${colors.tableColor};
-  background: ${colors.white};
+  background: #fff;
 
   &:first-child {
     border-left: 0;
   }
 
   &.weekend {
-    background: ${colors.weekendHeader};
+    background: ${({ theme }) => theme.calendarWeekend};
   }
 
   &.otherMonth {
-    background: ${colors.cellOtherMonthBackgroundColor};
-    color: ${colors.gray600};
+    background: ${({ theme }) => theme.calendarOtherMonth};
   }
 `;
 
 export const ContentWrapper = styled.div`
-  height: 100%;
-  width: 100%;
-  padding: 4px 0 4px 0;
+  display: flex;
+  flex: 1;
+  height: 26px;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
 `;
 
 export const Popper = styled(ErrorPopper)`
   display: flex;
   justify-content: flex-start;
-  height: 100%;
-  width: 100%;
 `;
 
 export const CellWrapper = styled.div`
   display: flex;
-  justify-content: flex-start;
-  height: 100%;
-  width: 100%;
+  flex: 1;
+  height: 26px;
+  justify-content: center;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
 `;
 
 export const CellValue = styled.p`
-  display: flex;
-  flex-direction: row;
-  margin: auto;
-  font-size: ${fontSizeXs};
-  font-style: normal;
-  font-weight: 600;
-  line-height: 20px;
-  letter-spacing: 0.75px;
-  text-align: center;
-  left: -2px;
-
-  min-width: 10px;
-  min-height: 10px;
-  position: relative;
+  display: block;
+  margin: 0 auto !important;
+  align-self: center;
+  font-size: ${({ theme }) => theme.FontStyles.roboto.Light12px.fontSize};
+  font-weight: ${({ theme }) => theme.FontStyles.roboto.Light12px.fontWeight};
 `;

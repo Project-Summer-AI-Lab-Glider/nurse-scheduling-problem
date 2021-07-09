@@ -57,7 +57,7 @@ export function ImportButtonsComponent(): JSX.Element {
       <DropdownButtons
         buttons={btnData}
         mainLabel={t("file")}
-        buttonVariant="primary"
+        buttonVariant="secondary"
         width={100}
         dataCy="file-dropdown"
       />

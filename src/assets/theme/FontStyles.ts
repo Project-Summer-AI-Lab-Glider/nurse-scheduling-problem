@@ -31,6 +31,12 @@ const robotoBlack16px: React.CSSProperties = {
   fontSize: "16px",
   lineHeight: "19px",
 };
+const robotoRegular10px: React.CSSProperties = {
+  ...RobotoNormal,
+  fontWeight: "normal",
+  fontSize: "10px",
+  lineHeight: "12px",
+};
 const robotoRegular12px: React.CSSProperties = {
   ...RobotoNormal,
   fontWeight: "normal",
@@ -62,6 +68,7 @@ const FontStyles = {
     Light12px: robotoLight12px,
     Black12px: robotoBlack12px,
     Black16px: robotoBlack16px,
+    Regular10px: robotoRegular10px,
     Regular12px: robotoRegular12px,
     Regular14px: robotoRegular14px,
     Regular16px: robotoRegular16px,

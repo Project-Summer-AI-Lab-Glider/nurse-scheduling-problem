@@ -7,7 +7,7 @@ import { colors } from "../../assets/css-consts";
 export const Wrapper = styled.div`
   overflow: auto;
   width: 100%;
-  padding: 20px;
+  /* padding: 20px; */
   min-height: 100vh;
 `;
 

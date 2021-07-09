@@ -7,6 +7,7 @@ import { ThemeProvider } from "styled-components";
 import { useSelector } from "react-redux";
 import { themes } from ".";
 import { getThemeKey } from "../../state/schedule-data/selectors";
+import { GlobalStyle } from "./GlobalStyles";
 
 interface ThemeProviderProps {
   children: ReactNode;
@@ -14,7 +15,12 @@ interface ThemeProviderProps {
 
 const CustomThemeProvider: React.FC<ThemeProviderProps> = ({ children }: ThemeProviderProps) => {
   const themeKey = useSelector(getThemeKey);
-  return <ThemeProvider theme={themes[themeKey]}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={themes[themeKey]}>
+      <GlobalStyle />
+      {children}
+    </ThemeProvider>
+  );
 };
 
 export default CustomThemeProvider;

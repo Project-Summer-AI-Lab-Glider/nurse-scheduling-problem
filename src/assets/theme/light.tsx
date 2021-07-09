@@ -9,5 +9,7 @@ export const purple: CustomThemeProps = {
   primaryHover: "#825bd6",
   primaryText: "#333333",
   background: "#D7D7D7",
+  calendarWeekend: "#FFFAEF",
+  calendarOtherMonth: "#F0F0F0",
   type: "light",
 };

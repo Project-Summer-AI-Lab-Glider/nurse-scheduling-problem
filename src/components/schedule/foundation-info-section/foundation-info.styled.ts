@@ -16,11 +16,11 @@ export const SectionContainer = styled.div`
 
 export const FoundationSectionWrapper = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   padding: 0;
-
-  background: ${colors.white};
+  margin-right: 107px;
   box-sizing: border-box;
 
   overflow: hidden;

@@ -6,16 +6,15 @@ import { Button as MaterialButton } from "@material-ui/core";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import SettingsIcon from "@material-ui/icons/Settings";
-import { colors, fontSizeBase } from "../../assets/css-consts";
+import { colors } from "../../assets/css-consts";
 import { Button } from "../buttons/button-component/button.component";
 
 export const Header = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 52px;
-  background-color: ${colors.primary};
-  padding: 0 20px 0 20px;
+  height: 42px;
+  background-color: #fff;
   align-items: center;
   justify-content: space-around;
   position: fixed;
@@ -23,12 +22,7 @@ export const Header = styled.div`
   z-index: 2;
 `;
 
-export const ReturnToNowBtn = styled(Button)`
-  margin-top: 0;
-  font-size: ${fontSizeBase};
-  padding: 0 10px;
-  margin-bottom: 0;
-`;
+export const ReturnToNowBtn = styled(Button)``;
 
 export const Settings = styled(SettingsIcon)`
   color: ${colors.white};
@@ -48,7 +42,9 @@ export const Filler = styled.div`
   flex-grow: 1;
 `;
 
-export const ReportIssueBtn = styled(MaterialButton)`
+export const UtilityButton = styled(MaterialButton)`
+  padding: 5px;
+  display: block;
   && {
     color: ${colors.white};
     padding-right: 5px;
@@ -59,5 +55,19 @@ export const ReportIssueBtn = styled(MaterialButton)`
       text-decoration: underline;
       transform: none;
     }
+  }
+`;
+
+export const Row = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    white-space: nowrap;
   }
 `;

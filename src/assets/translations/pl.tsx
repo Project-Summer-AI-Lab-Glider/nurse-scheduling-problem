@@ -5,11 +5,14 @@
 export const pl = {
   translation: {
     // App.tsx
+    editModeActive: "Tryb edycji aktywny",
     schedule: "Plan",
     management: "Zarządzanie",
     // header.component.tsx
     reportError: "Zgłoś błąd",
     returnToNow: "Wróć do teraz",
+    help: "Pomoc",
+    changeSettings: "Zmień ustawienia",
     // empty-month-bttons.tsx
     loadScheduleFrom: "Kopiuj plan z",
     loadFromFile: "Wgraj z pliku",

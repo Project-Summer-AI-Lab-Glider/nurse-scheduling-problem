@@ -5,15 +5,18 @@ import styled from "styled-components";
 import { colors, fontSizeBase } from "../../assets/css-consts";
 
 export const SeparatorWrapper = styled.div`
-  height: 50px;
+  height: 16px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
 `;
 
-export const Separator = styled.hr`
+export const Separator = styled.div`
   width: 102%;
+  height: 1px;
   border: 0;
-  border-top: 2px solid ${colors.tableBorderGrey};
+  background: #c4c4c4;
 `;
 
 export const LabelWrapper = styled.div`

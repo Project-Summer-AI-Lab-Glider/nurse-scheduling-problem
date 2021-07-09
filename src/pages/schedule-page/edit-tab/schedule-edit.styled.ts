@@ -3,4 +3,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import styled from "styled-components";
 
-export const ScheduleWrapper = styled.div``;
+export const ScheduleWrapper = styled.div`
+  width: 100%;
+`;

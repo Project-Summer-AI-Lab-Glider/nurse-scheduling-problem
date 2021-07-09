@@ -133,7 +133,7 @@ export const SHIFTS: ShiftsDictionary = {
     name: "popołudnie",
     from: 15,
     to: 19,
-    color: "00A3FF",
+    color: "0066FF",
     isWorkingShift: true,
   },
   D: {
@@ -149,7 +149,7 @@ export const SHIFTS: ShiftsDictionary = {
     name: "noc",
     from: 19,
     to: 7,
-    color: "1D3557",
+    color: "333333",
     isWorkingShift: true,
   },
   DN: {
@@ -191,7 +191,7 @@ export const SHIFTS: ShiftsDictionary = {
     name: "zwolnienie lekarskie (L4)",
     from: 0,
     to: 24,
-    color: "C60000",
+    color: "EF002B",
     isWorkingShift: false,
     type: NotWorkingShiftType.MedicalLeave,
   },

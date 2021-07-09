@@ -44,17 +44,11 @@ export function WorkerInfoSection({
   );
   return (
     <S.Wrapper>
-      <S.SectionContainer className="borderContainer">
-        <div>
-          <NameTableComponent data={dataRows} isWorker {...options} />
-        </div>
-        <S.ShiftSectionWrapper data-cy={shiftSectionDataCy(sectionIndex)}>
-          <ShiftsSectionComponent sectionKey={options.sectionName} data={dataRows} {...options} />
-        </S.ShiftSectionWrapper>
-      </S.SectionContainer>
-      <S.SummarySectionWrapper>
-        <SummaryTableSection data={dataRows} {...options} sectionIndex={sectionIndex} />
-      </S.SummarySectionWrapper>
+      <NameTableComponent data={dataRows} isWorker {...options} />
+      <S.ShiftSectionWrapper data-cy={shiftSectionDataCy(sectionIndex)}>
+        <ShiftsSectionComponent sectionKey={options.sectionName} data={dataRows} {...options} />
+      </S.ShiftSectionWrapper>
+      <SummaryTableSection data={dataRows} {...options} sectionIndex={sectionIndex} />
     </S.Wrapper>
   );
 }

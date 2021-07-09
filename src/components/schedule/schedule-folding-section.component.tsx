@@ -4,6 +4,7 @@
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import React, { ReactNode, useState } from "react";
+import FontStyles from "../../assets/theme/FontStyles";
 import * as S from "./schedule-folding-section.styled";
 
 interface ScheduleFoldingSectionOptions {
@@ -21,7 +22,10 @@ export function ScheduleFoldingSection({
   return (
     <>
       <S.SeparatorWrapper>
-        <S.LabelWrapper onClick={(): void => setOpened((prev) => !prev)}>
+        <S.LabelWrapper
+          style={FontStyles.roboto.Regular14px}
+          onClick={(): void => setOpened((prev) => !prev)}
+        >
           <span>{opened ? <ExpandMoreIcon /> : <ChevronRightIcon />}</span>
           <span>{name}</span>
         </S.LabelWrapper>

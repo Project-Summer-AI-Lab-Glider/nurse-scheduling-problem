@@ -5,13 +5,14 @@ import styled from "styled-components";
 import { colors } from "../../../../assets/css-consts";
 
 export const SummaryRow = styled.div`
-  display: flex;
+  display: inline-flex;
+  width: 102px;
+  flex: 1;
+  gap: 1px;
   flex-direction: row;
   align-items: center;
-  padding: 0;
-  position: static;
-  height: 40px;
-  width: 130px;
+  margin-bottom: 5px;
+  height: 26px;
 
   //text
   text-align: center;
@@ -19,10 +20,10 @@ export const SummaryRow = styled.div`
   font-style: normal;
   font-weight: 300;
   font-size: 12px;
-  line-height: 24px;
+  line-height: 14px;
 
   &:not(:last-child) {
-    border-bottom: 1px solid ${colors.tableBorderGrey};
+    /* border-bottom: 1px solid ${colors.tableBorderGrey}; */
 
     &.selection {
       border-color: white;
@@ -30,7 +31,7 @@ export const SummaryRow = styled.div`
   }
 
   &.selection {
-    border-left: 1px solid white;
+    /* border-left: 1px solid white; */
     background-color: white;
     outline: white solid 1px;
     box-shadow: 0 4px 7px rgba(16, 32, 70, 0.2), 0 0 7px rgba(16, 32, 70, 0.2);

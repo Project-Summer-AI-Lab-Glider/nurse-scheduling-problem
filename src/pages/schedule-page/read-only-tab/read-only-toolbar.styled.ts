@@ -9,18 +9,21 @@ export const Wrapper = styled.div`
   flex-direction: row;
   align-items: center;
   width: 100%;
-  margin: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 export const RevisionWrapper = styled.div`
   font-size: ${fontSizeBase};
   letter-spacing: 0.75px;
-  color: ${colors.primary};
-  padding: 0 25px 0 25px;
+  color: ${({ theme }) => theme.primaryText};
 
   .revision-select {
-    border: 0;
-    background: inherit;
+    border-radius: 2px;
+    width: 247px;
+    border: 1px solid ${({ theme }) => theme.gray};
+    padding: 7px 8px 7px 6px;
+    background: #fff;
     font-size: inherit;
     letter-spacing: inherit;
     font-family: inherit;

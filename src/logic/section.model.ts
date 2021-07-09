@@ -9,7 +9,7 @@ export enum ChildrenSectionKey {
 }
 
 export enum ExtraWorkersSectionKey {
-  ExtraWorkersCount = "Pracownicy dzienni",
+  ExtraWorkersCount = "Pracownicy",
 }
 
 export enum MetaDataSectionKey {

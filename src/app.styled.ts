@@ -15,6 +15,7 @@ export const Content = styled.div`
   overflow-y: auto;
   height: 100vh;
   flex-grow: 1;
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export const Drawer = styled.div`

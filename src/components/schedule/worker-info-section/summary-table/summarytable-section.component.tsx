@@ -18,11 +18,9 @@ export function SummaryTableSection({
 }: SummaryTableSectionOptions): JSX.Element {
   return (
     <S.Wrapper id="summaryTable" data-cy={summaryTableSectionDataCy(sectionIndex)}>
-      <div>
-        {data.map((dataRow, rowIndex) => (
-          <SummaryTableRow key={dataRow.rowKey} workerName={dataRow.rowKey} rowIndex={rowIndex} />
-        ))}
-      </div>
+      {data.map((dataRow, rowIndex) => (
+        <SummaryTableRow key={dataRow.rowKey} workerName={dataRow.rowKey} rowIndex={rowIndex} />
+      ))}
     </S.Wrapper>
   );
 }

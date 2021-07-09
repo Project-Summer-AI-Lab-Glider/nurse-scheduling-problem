@@ -19,8 +19,6 @@ export const ShiftCell = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  border-right: 1px solid ${colors.tableBorderGrey};
-  border-bottom: 1px solid ${colors.tableBorderGrey};
 `;
 
 export const ShiftTop = styled.div`

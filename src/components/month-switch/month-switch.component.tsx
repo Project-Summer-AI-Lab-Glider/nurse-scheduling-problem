@@ -8,6 +8,7 @@ import * as S from "./month-switch.styled";
 import { useActualMonth } from "../../hooks/use-actual-month";
 import { MonthSwitchActionCreator } from "../../state/schedule-data/month-switch.action-creator";
 import { AppMode, useAppConfig } from "../../state/app-config-context";
+import FontStyles from "../../assets/theme/FontStyles";
 
 interface MonthSwitchComponentOptions {
   isInViewMode: boolean;
@@ -29,29 +30,25 @@ export function MonthSwitchComponent({ isInViewMode }: MonthSwitchComponentOptio
     <>
       {actualMonth && (
         <S.Wrapper>
-          {showMonthNavigation && (
-            <S.IconWrapper
-              data-cy="switch-prev-month"
-              onClick={(): void => {
-                dispatch(MonthSwitchActionCreator.switchToNewMonth(-1));
-              }}
-            >
-              <MdChevronLeft />
-            </S.IconWrapper>
-          )}
+          <S.IconWrapper
+            data-cy="switch-prev-month"
+            onClick={() => dispatch(MonthSwitchActionCreator.switchToNewMonth(-1))}
+            style={{ display: showMonthNavigation ? "block" : "none" }}
+          >
+            <MdChevronLeft />
+          </S.IconWrapper>
 
-          <S.MonthName data-cy="month-name">{actualMonth}</S.MonthName>
+          <S.MonthName style={FontStyles.roboto.Black16px} data-cy="month-name">
+            {actualMonth}
+          </S.MonthName>
 
-          {showMonthNavigation && (
-            <S.IconWrapper
-              data-cy="switch-next-month"
-              onClick={(): void => {
-                dispatch(MonthSwitchActionCreator.switchToNewMonth(1));
-              }}
-            >
-              <MdChevronRight />
-            </S.IconWrapper>
-          )}
+          <S.IconWrapper
+            data-cy="switch-next-month"
+            onClick={() => dispatch(MonthSwitchActionCreator.switchToNewMonth(1))}
+            style={{ display: showMonthNavigation ? "block" : "none" }}
+          >
+            <MdChevronRight />
+          </S.IconWrapper>
         </S.Wrapper>
       )}
     </>

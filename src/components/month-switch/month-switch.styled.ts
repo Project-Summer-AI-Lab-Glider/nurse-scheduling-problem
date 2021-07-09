@@ -3,19 +3,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import styled from "styled-components";
 import { IconButton } from "@material-ui/core";
-import { colors, fontSizeLg, iconSizeSm } from "../../assets/css-consts";
+import { fontSizeLg, iconSizeSm } from "../../assets/css-consts";
 
 export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  position: absolute;
   margin: auto;
-
-  * {
-    color: ${colors.white};
-  }
 `;
 
 export const IconWrapper = styled(IconButton)`

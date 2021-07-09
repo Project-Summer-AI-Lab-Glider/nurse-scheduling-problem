@@ -5,10 +5,12 @@ import React from "react";
 import * as S from "./summarytable-cell.styled";
 import { summaryCellDataCy, SummaryTableCellOptions } from "./summarytable-cell.models";
 
-function SummaryTableCellF({ value, cellIndex }: SummaryTableCellOptions): JSX.Element {
+function SummaryTableCellF({ value, cellIndex, type }: SummaryTableCellOptions): JSX.Element {
   return (
     <S.Wrapper data-cy={summaryCellDataCy(cellIndex)}>
-      <span>{value}</span>
+      <span style={{ color: type === "overTime" && value !== 0 ? "#F31C43" : "#333333" }}>
+        {value > 0 && type === "overTime" ? `+${value}` : value}
+      </span>
     </S.Wrapper>
   );
 }

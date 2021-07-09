@@ -12,12 +12,15 @@ export interface CustomThemeProps {
   primaryHover: string;
   primaryText: string;
   background: string;
+  calendarWeekend: string;
+  calendarOtherMonth: string;
   type: "dark" | "light";
 }
 
 const ThemeConstants = {
   fonts: ["Roboto"],
   FontStyles,
+  gray: "#c4c4c4",
 };
 type ThemeConstantsType = typeof ThemeConstants;
 

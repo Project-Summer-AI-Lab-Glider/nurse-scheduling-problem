@@ -7,6 +7,7 @@ import { baseCellDataCy } from "../../base/base-cell/base-cell.models";
 export interface SummaryTableCellOptions {
   value: number;
   cellIndex: number;
+  type: string;
 }
 
 export const summaryCellDataCy = (index: number): string => baseCellDataCy(index, "cell");

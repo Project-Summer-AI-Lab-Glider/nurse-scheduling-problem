@@ -2,9 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import React from "react";
-import * as S from "./overtime-header-row.styled";
 import { ArrayHelper } from "../../../../helpers/array.helper";
-import { OvertimeHeaderCell } from "./overtime-header-cell.component";
+import FileSignatureIcon from "../../../../assets/images/svg-components/FileSignatureIcon";
+import ClockIcon from "../../../../assets/images/svg-components/ClockIcon";
+import OvertimeIcon from "../../../../assets/images/svg-components/OvertimeIcon";
+import { OvertimeHeaderContainer } from "./overtime-header-cell.styled";
 
 export interface OvertimeHeaderRowOptions {
   data: string[];
@@ -12,13 +14,11 @@ export interface OvertimeHeaderRowOptions {
 
 function OvertimeHeaderRowF({ data }: OvertimeHeaderRowOptions): JSX.Element {
   return (
-    <S.SectionWrapper>
-      <S.SummaryRow>
-        {data.map((cellData) => (
-          <OvertimeHeaderCell value={cellData} key={cellData} />
-        ))}
-      </S.SummaryRow>
-    </S.SectionWrapper>
+    <OvertimeHeaderContainer>
+      <FileSignatureIcon />
+      <ClockIcon />
+      <OvertimeIcon />
+    </OvertimeHeaderContainer>
   );
 }
 

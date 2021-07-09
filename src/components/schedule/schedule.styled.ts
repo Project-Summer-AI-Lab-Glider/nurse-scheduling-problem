@@ -7,12 +7,12 @@ export const TimeHeader = styled.div`
   display: flex;
   flex-direction: row;
   position: sticky;
-
-  top: 52px;
   z-index: 3;
   flex: 1;
-  padding-top: 19px;
-  width: 1500px;
+  height: 40px;
+  width: 100%;
+  top: 50px;
+  background: #fff;
 `;
 
 export const TimeTableContainer = styled.div`
@@ -20,5 +20,11 @@ export const TimeTableContainer = styled.div`
 `;
 
 export const SummaryContainer = styled.div`
-  margin-left: 32px;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-around;
+  justify-items: center;
 `;
+
+export const ScheduleContainer = styled.div``;

@@ -12,7 +12,12 @@ export function SummaryTableRowF({ workerName, rowIndex }: SummaryTableRowOption
   return (
     <S.SummaryRow id="summaryRow" data-cy={summaryRowDataCy(rowIndex)}>
       {Object.keys(workerHours).map((key, index) => (
-        <SummaryTableCell key={`${key}_${index}`} value={workerHours[key]} cellIndex={index} />
+        <SummaryTableCell
+          key={`${key}_${index}`}
+          type={key}
+          value={workerHours[key]}
+          cellIndex={index}
+        />
       ))}
     </S.SummaryRow>
   );

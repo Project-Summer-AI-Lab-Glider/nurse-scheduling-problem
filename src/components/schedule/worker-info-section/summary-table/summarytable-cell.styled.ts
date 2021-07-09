@@ -5,16 +5,12 @@ import styled from "styled-components";
 import { colors } from "../../../../assets/css-consts";
 
 export const Wrapper = styled.div`
-  flex: 1 1 auto;
+  display: flex;
+  flex: 1;
   align-items: center;
-  height: 103%;
-  width: 120%;
-  border-top: 1px solid ${colors.tableBorderGrey};
-  border-left: 1px solid ${colors.tableBorderGrey};
-
-  padding-top: 8%;
-
-  color: ${colors.cellColor};
+  justify-content: center;
+  text-align: center;
+  height: 26px;
   background: ${colors.white};
 
   &:first-child {

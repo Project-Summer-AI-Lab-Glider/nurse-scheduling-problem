@@ -66,8 +66,8 @@ enum RevisionKeyIndexes {
 }
 
 export const RevisionTypeLabels: { [key: string]: string } = {
-  primary: "wersja bazowa",
-  actual: "wersja aktualna",
+  primary: "Wersja bazowa",
+  actual: "Wersja aktualna",
 };
 
 export const getRevisionTypeFromKey = (revisionKey: RevisionKey): RevisionType =>

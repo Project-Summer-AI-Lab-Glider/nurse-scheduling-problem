@@ -83,7 +83,6 @@ export function ShiftCellComponentF(options: ShiftCellOptions): JSX.Element {
         ) : (
           <ShiftCellContent {...options} shiftCode={shiftCode} />
         )}
-        )
       </CellWrapper>
     </>
   );

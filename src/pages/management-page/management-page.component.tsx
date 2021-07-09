@@ -5,7 +5,7 @@ import React from "react";
 import * as S from "./management-page.styled";
 import RouteButtonsComponent, {
   Tabs,
-} from "../../components/buttons/route-buttons/route-buttons.component";
+} from "../../components/buttons/route-buttons/route-buttons.component.old";
 import ShiftTab from "./shifts-tab/shifts-tab.component";
 import WorkersTab from "./workers-tab/workers-tab.component";
 

@@ -13,6 +13,10 @@ export const Wrapper = styled.div`
   width: 100%;
   margin: 5px;
 `;
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 export const undoRedoIcon = css`
   color: ${colors.primary};

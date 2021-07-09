@@ -29,6 +29,8 @@ import {
 } from "../../../state/schedule-data/selectors";
 import { UndoActionCreator } from "../../../state/schedule-data/undoable.action-creator";
 import { WorkerShiftsModel } from "../../../state/schedule-data/workers-shifts/worker-shifts.model";
+import UndoIcon from "../../../assets/images/svg-components/UndoIcon";
+import RedoIcon from "../../../assets/images/svg-components/RedoIcon";
 
 interface EditPageToolbarOptions {
   close: () => void;
@@ -104,7 +106,7 @@ export function EditPageToolbar({ close }: EditPageToolbarOptions): JSX.Element 
   return (
     <S.Wrapper>
       <Button onClick={onUndoClick} variant="circle" data-cy="undo-button" disabled={!anyChanges()}>
-        <S.UndoIcon />
+        <UndoIcon />
       </Button>
 
       <Button
@@ -113,19 +115,18 @@ export function EditPageToolbar({ close }: EditPageToolbarOptions): JSX.Element 
         variant="circle"
         disabled={undoCounter === 0}
       >
-        <S.RedoIcon />
-      </Button>
-
-      <S.EditTextWrapper data-cy="edit-mode-text">Tryb edycji aktywny</S.EditTextWrapper>
-
-      <Button data-cy="check-schedule-button" variant="primary" onClick={prepareDrawer}>
-        {t("editPageToolbarCheckPlan")}
+        <RedoIcon />
       </Button>
 
       <S.Filler />
 
       <ConditionalLink to="/" shouldNavigate={!anyChanges()}>
-        <Button onClick={askForSavingChanges} variant="secondary" data-cy="leave-edit-mode">
+        <Button
+          style={{ marginRight: "8px" }}
+          onClick={askForSavingChanges}
+          variant="secondary"
+          data-cy="leave-edit-mode"
+        >
           {t("editPageToolbarExit")}
         </Button>
         <SaveChangesModal
@@ -137,14 +138,18 @@ export function EditPageToolbar({ close }: EditPageToolbarOptions): JSX.Element 
       </ConditionalLink>
 
       <Button
+        style={{ marginRight: "8px" }}
         data-cy="save-schedule-button"
-        variant="primary"
+        variant="secondary"
         disabled={!anyChanges()}
         onClick={(): void => {
           handleSaveClick();
         }}
       >
         {t("editPageToolbarSavePlan")}
+      </Button>
+      <Button data-cy="check-schedule-button" variant="primary" onClick={prepareDrawer}>
+        {t("editPageToolbarCheckPlan")}
       </Button>
     </S.Wrapper>
   );

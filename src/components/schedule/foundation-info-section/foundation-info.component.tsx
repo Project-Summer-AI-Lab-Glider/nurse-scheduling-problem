@@ -51,23 +51,15 @@ export function FoundationInfoComponent(): JSX.Element {
     [dispatch, isEditMode]
   );
   return (
-    <div style={{ display: "inline-block" }}>
-      <S.SectionContainer className="borderContainer">
-        <div>
-          <NameTableComponent data={sectionData} isWorker={false} />
-        </div>
-        <div>
-          <div>
-            <S.FoundationSectionWrapper data-cy="foundationInfoSection">
-              <BaseSectionComponent
-                sectionKey="foundationInfo"
-                data={sectionData}
-                updateData={updateFoundationInfoData}
-              />
-            </S.FoundationSectionWrapper>
-          </div>
-        </div>
-      </S.SectionContainer>
-    </div>
+    <S.SectionContainer className="borderContainer">
+      <NameTableComponent data={sectionData} isWorker={false} />
+      <S.FoundationSectionWrapper data-cy="foundationInfoSection">
+        <BaseSectionComponent
+          sectionKey="foundationInfo"
+          data={sectionData}
+          updateData={updateFoundationInfoData}
+        />
+      </S.FoundationSectionWrapper>
+    </S.SectionContainer>
   );
 }

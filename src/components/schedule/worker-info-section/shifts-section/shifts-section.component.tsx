@@ -65,16 +65,14 @@ export function ShiftsSectionComponent(options: ShiftsSectionOptions): JSX.Eleme
   );
 
   return (
-    <div>
-      <BaseSectionComponent
-        {...options}
-        sectionKey={sectionKey}
-        data={data}
-        cellComponent={ShiftCellComponent}
-        rowComponent={ShiftRowComponent}
-        errorSelector={shiftSectionErrorSelector}
-        updateData={updateWorkerShifts}
-      />
-    </div>
+    <BaseSectionComponent
+      {...options}
+      sectionKey={sectionKey}
+      data={data}
+      cellComponent={ShiftCellComponent}
+      rowComponent={ShiftRowComponent}
+      errorSelector={shiftSectionErrorSelector}
+      updateData={updateWorkerShifts}
+    />
   );
 }

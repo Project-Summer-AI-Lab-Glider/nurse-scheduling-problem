@@ -14,6 +14,7 @@ import {
   ScheduleError,
 } from "../../../../state/schedule-data/schedule-errors/schedule-error.model";
 import { TranslationHelper } from "../../../../helpers/translations.helper";
+import FontStyles from "../../../../assets/theme/FontStyles";
 
 export interface TimeTableCellOptions {
   value: VerboseDate;
@@ -57,8 +58,10 @@ function TimeTableCellF({ value, currMonth, index }: TimeTableCellOptions): JSX.
   return (
     <S.Wrapper className={getHeaderClass()}>
       <S.Popper errorSelector={errorSelector}>
-        <S.DayName>{TranslationHelper.weekDaysTranslations[value.dayOfWeek]}</S.DayName>
-        <S.DayMarker className={classNames({ today })}>
+        <S.DayName style={FontStyles.roboto.Light12px}>
+          {TranslationHelper.weekDaysTranslations[value.dayOfWeek]}
+        </S.DayName>
+        <S.DayMarker style={FontStyles.roboto.Black12px} className={classNames({ today })}>
           <span>{value.date}</span>
         </S.DayMarker>
       </S.Popper>

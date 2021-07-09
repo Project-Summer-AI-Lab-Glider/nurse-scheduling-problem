@@ -21,11 +21,11 @@ export const SectionContainer = styled.div`
 
 export const ShiftSectionWrapper = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   padding: 0;
 
-  background: ${colors.white};
   box-sizing: border-box;
 
   overflow: hidden;
@@ -35,5 +35,5 @@ export const ShiftSectionWrapper = styled.div`
 `;
 
 export const SummarySectionWrapper = styled.div`
-  margin-left: 2%;
+  /* margin-left: 2%; */
 `;

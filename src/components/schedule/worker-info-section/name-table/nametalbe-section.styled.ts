@@ -2,45 +2,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import styled from "styled-components";
-import { colors, fontSizeXs } from "../../../../assets/css-consts";
 
 export const Wrapper = styled.div`
   align-items: center;
   padding: 0;
-  width: 126px;
+  margin-right: 5px;
+  width: 102px;
 `;
 
 export const Row = styled.div`
   display: flex;
   align-items: center;
-  height: 40px;
+  height: 26px;
   width: 100%;
-
-  font-style: normal;
-  font-weight: 500;
-  font-size: ${fontSizeXs};
-
-  color: ${colors.primaryTextColor};
-  border-bottom: 1px solid ${colors.tableBorderGrey};
+  padding: 10px, 6px, 10px, 6px;
+  background-color: #fff;
+  margin-bottom: 5px;
+  border-radius: 2px;
   cursor: default;
 
-  &.babysitterMarker {
-    border-left: 3px solid ${colors.babysitterColor};
-    cursor: pointer;
-  }
-
-  &.nurseMarker {
-    border-left: 3px solid ${colors.nurseColor};
-    cursor: pointer;
-  }
-
   &.isFirst {
-    border-top-left-radius: 10px;
   }
 
   &.isLast {
-    border-bottom-left-radius: 10px;
-    border-bottom: 0;
+    margin-bottom: 0;
   }
 `;
 

@@ -5,32 +5,28 @@ import styled from "styled-components";
 import { colors } from "../../../../assets/css-consts";
 
 export const MainRow = styled.div`
-  display: flex;
+  display: inline-flex;
+  gap: 1px;
+  flex: 1;
   flex-direction: row;
   align-items: center;
   padding: 0;
   position: static;
-  width: 1350px;
-  height: 40px;
+  height: 26px;
 
   //text
   text-align: center;
-  letter-spacing: 0.75px;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 12px;
-  line-height: 24px;
+  margin-bottom: 5px;
 
   &:not(:last-child) {
-    border-bottom: 1px solid ${colors.tableBorderGrey};
+    /* border-bottom: 1px solid ${colors.tableBorderGrey}; */
 
     &.selection {
-      border-color: white;
+      /* border-color: white; */
     }
   }
 
   &.selection {
-    border-left: 1px solid white;
     background-color: white;
     outline: white solid 1px;
     box-shadow: 0 4px 7px rgba(16, 32, 70, 0.2), 0 0 7px rgba(16, 32, 70, 0.2);

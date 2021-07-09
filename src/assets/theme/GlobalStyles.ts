@@ -8,9 +8,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: Roboto;
     margin: 0;
     padding:0;
-
-
- 
+    color: ${({ theme }) => theme.primaryText} ;
 }
 
 *,
@@ -18,13 +16,7 @@ export const GlobalStyle = createGlobalStyle`
 *::after {
   box-sizing: border-box; // 1
 }
-
 html {
-
-
-
-
-
   font-family: sans-serif; // 2
   line-height: 1.5; // 3
   -webkit-text-size-adjust: 100%; // 4
@@ -36,7 +28,7 @@ html {
 body {
 
 
-
+  background-color: ${({ theme }) => theme.background};
   font-size: 1rem;
   font-weight: 300;
   line-height: 1.5;
