@@ -1,0 +1,24 @@
+{
+    "originalRepo":"https://github.com/TheSoftwareDesignLab/monkey-cypress",
+    "projectId":"TSDL-Smart-Monkey-with-cypress",
+    "baseUrl":"http://localhost:3000",
+    "env":{
+        "appName":"App prueba",
+        "events":500,
+        "delay":250,
+        "seed":12345,
+        "pctClicks":12,
+        "pctScroll":0,
+        "pctSelectors":12,
+        "pctKeys":12,
+        "pctSpKeys":12,
+        "pctPgNav":12,
+        "pctBwChaos":12,
+        "pctActions":16
+    },
+    "integrationFolder": "./cypress/integration/monkey",
+    "pluginsFile": "./cypress/plugins/index.js",
+    "pageLoadTimeout":120000,
+    "testFiles": "smart-monkey.js",
+    "videosFolder":"./results"
+}

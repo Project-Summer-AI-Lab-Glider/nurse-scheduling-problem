@@ -8,5 +8,6 @@
   "projectId": "p2u9dy",
   "trashAssetsBeforeRuns": true,
   "retries": 1,
-  "baseUrl": "http://localhost:3000"
+  "baseUrl": "http://localhost:3000",
+  "ignoreTestFiles": ["*smart-monkey.js"]
 }
